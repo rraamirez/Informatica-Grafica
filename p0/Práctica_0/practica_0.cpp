@@ -36,48 +36,62 @@ void Ejes (int width)
        
 }
 
-
 void Monigote ()
 {
-  
- 
-// // cara
-//    glLineWidth(1);
-//    glColor3f(1.0,0.8,0.6);
-//    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-//    glBegin(GL_POLYGON);
-//       glVertex3f(-0.2,0.0,0.0);
-//       glVertex3f(0.2,0.0,0.0);
-//       glVertex3f(0.2,0.55,0.0);
-//       glVertex3f(-0.2,0.55,0.0);
-//    glEnd(); 
-
-//    glColor3f(0.0,0.0,0.);
-//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-//    glBegin(GL_POLYGON);
-//       glVertex3f(-0.2,0.0,0.0);
-//       glVertex3f(0.2,0.0,0.0);
-//       glVertex3f(0.2,0.55,0.0);
-//       glVertex3f(-0.2,0.55,0.0);
-//    glEnd();
-
-//    //ojos
-//    glColor3f(1.0,0.0,1.0);
-//    Circle(0.05,0.1,0.35,20,GL_FILL);
-//    Circle(0.05,-0.1,0.35,20,GL_LINE);
-
-//    //DRAWING THE MOUTH
-//    glColor3f(1.0,0.0,0.0);
-//    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-//    glBegin(GL_POLYGON);
-//       glVertex3f(-0.1,0.2,0.0);
-//       glVertex3f(0.1,0.2,0.0);
-//       glVertex3f(0.1,0.25,0.0);
-//       glVertex3f(-0.1,0.25,0.0);
-//    glEnd();
+ // cara
+    glLineWidth(1);
+    glColor3f(1.0,0.8,0.6);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glBegin(GL_POLYGON);
+       glVertex3f(-0.2,0.0,0.0);
+       glVertex3f(0.2,0.0,0.0);
+       glVertex3f(0.2,0.55,0.0);
+       glVertex3f(-0.2,0.55,0.0);
+    glEnd(); 
+    glColor3f(0.0,0.0,0.);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glBegin(GL_POLYGON);
+       glVertex3f(-0.2,0.0,0.0);
+       glVertex3f(0.2,0.0,0.0);
+       glVertex3f(0.2,0.55,0.0);
+       glVertex3f(-0.2,0.55,0.0);
+    glEnd();
+    //ojos
+    glColor3f(1.0,0.0,1.0);
+    Circle(0.05,0.1,0.35,20,GL_FILL);
+    Circle(0.05,-0.1,0.35,20,GL_LINE);
+    //DRAWING THE MOUTH
+    glColor3f(1.0,0.0,0.0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glBegin(GL_POLYGON);
+       glVertex3f(-0.1,0.2,0.0);
+       glVertex3f(0.1,0.2,0.0);
+       glVertex3f(0.1,0.25,0.0);
+       glVertex3f(-0.1,0.25,0.0);
+    glEnd();
 
    
 }
+
+void youtubeLogo(){
+   glLineWidth(2);
+   glColor3f(1.0, 0.0, 0.0); // Rojo 
+   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glBegin(GL_POLYGON);
+       glVertex3f(-0.45,-0.35,0.0);
+       glVertex3f(0.45,-0.35,0.0);
+       glVertex3f(0.45,0.35,0.0);
+       glVertex3f(-0.45,0.35,0.0);
+    glEnd();
+
+   glColor3f(1.0,1.0,1.0);
+   glBegin(GL_TRIANGLES);
+      glVertex2f(-0.25,-0.2);
+      glVertex2f(0.25,0.0);
+      glVertex2f(-0.25,0.2);
+   glEnd();
+
+};
 
 static void Init( )
 {
@@ -104,9 +118,8 @@ static void Display( )
    glLoadIdentity( );
   
    
-   Ejes(6);
-   Monigote();
-   
+   Ejes(2);
+   youtubeLogo();
    glFlush();
 }
 
