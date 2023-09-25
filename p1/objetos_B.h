@@ -41,7 +41,13 @@ void 	draw_aristas(float r, float g, float b, int grosor);
 void    draw_solido(float r, float g, float b);
 void 	draw_solido_colores();
 
+void asignar_gama_verdes();
+void asignar_gama_rojos();
+void asignar_randomColor();
+
 vector<_vertex3i> caras;
+vector<_vertex3f> colores;
+
 };
 
 
@@ -69,7 +75,12 @@ public:
 };
 
 
+class _tronco_piramide: public _triangulos3D
+{
+public:
 
+	_tronco_piramide(float tam1=0.5, float tam2=0.2, float al=1.0);
+};
 
 
 

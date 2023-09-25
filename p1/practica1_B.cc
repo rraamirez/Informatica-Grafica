@@ -29,6 +29,7 @@ int UI_window_pos_x=50,UI_window_pos_y=50,UI_window_width=450,UI_window_height=4
 
 _piramide piramide(0.8,1.3);
 _cubo cubo(0.6);
+_tronco_piramide tronco_piramide(1,0.3,1.3);
 
 //**************************************************************************
 //
@@ -100,8 +101,9 @@ glEnd();
 
 void draw_objects()
 {
-     
- piramide.draw_puntos(1.0,0.5,0.0,5);
+   tronco_piramide.draw_aristas(0.0,0.0,0.0,1);  
+ //piramide.draw_solido(0.0,0.0,1.0);
+ //cubo.draw_solido_colores();
 }
 
 
