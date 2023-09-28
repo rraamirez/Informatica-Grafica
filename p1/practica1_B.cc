@@ -101,9 +101,20 @@ glEnd();
 
 void draw_objects()
 {
-   tronco_piramide.draw_aristas(0.0,0.0,0.0,1);  
- //piramide.draw_solido(0.0,0.0,1.0);
- //cubo.draw_solido_colores();
+
+    //piramide.draw_puntos(0.0,0.0,0.0,1);//si
+    //piramide.draw_aristas(0.0,0.0,0.0,1);//si
+    //piramide.draw_solido(0.5,0.0,0.0);//si
+    piramide.draw_solido_colores();//si
+
+    // cubo.draw_puntos(0.0,0.0,0.0,1);
+    //  cubo.draw_aristas(0.0,0.0,0.0,1);
+    //  cubo.draw_solido(0.5,0.0,0.0);
+    //    cubo.draw_solido_colores();
+
+    // tronco_piramide.draw_puntos(0.0,0.0,0.0,1);
+    // tronco_piramide.draw_aristas(0.0,0.0,0.0,1);
+    // tronco_piramide.draw_solido_colores();
 }
 
 

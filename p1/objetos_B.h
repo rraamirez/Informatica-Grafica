@@ -25,7 +25,6 @@ void 	draw_puntos(float r, float g, float b, int grosor);
 
 vector<_vertex3f> vertices;
 
-//_vertex3f colores;
 };
 
 //*************************************************************************
@@ -41,6 +40,7 @@ void 	draw_aristas(float r, float g, float b, int grosor);
 void    draw_solido(float r, float g, float b);
 void 	draw_solido_colores();
 
+void asignar_gama_amarillos();
 void asignar_gama_verdes();
 void asignar_gama_rojos();
 void asignar_randomColor();
