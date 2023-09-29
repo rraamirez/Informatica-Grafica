@@ -1,5 +1,13 @@
 //**************************************************************************
 // Práctica 1
+// Versión del estudiante: Raúl Ramírez Abril
+// Grupo B3
+// Curso 2023/2024
+//**************************************************************************
+
+
+//**************************************************************************
+// Práctica 1
 //
 // Domingo Martin Perandres 2013
 //
@@ -102,19 +110,20 @@ glEnd();
 void draw_objects()
 {
 
-    //piramide.draw_puntos(0.0,0.0,0.0,1);//si
-    //piramide.draw_aristas(0.0,0.0,0.0,1);//si
-    //piramide.draw_solido(0.5,0.0,0.0);//si
-    piramide.draw_solido_colores();//si
+    // piramide.draw_puntos(0.0,0.0,0.0,1);
+    // piramide.draw_aristas(0.0,0.0,0.0,1);
+    // piramide.draw_solido(0.5,0.0,0.0);
+    // piramide.draw_solido_colores();
 
     // cubo.draw_puntos(0.0,0.0,0.0,1);
-    //  cubo.draw_aristas(0.0,0.0,0.0,1);
-    //  cubo.draw_solido(0.5,0.0,0.0);
-    //    cubo.draw_solido_colores();
+    // cubo.draw_aristas(0.0,0.0,0.0,1);
+    // cubo.draw_solido(0.5,0.0,0.0);
+    // cubo.draw_solido_colores();
 
     // tronco_piramide.draw_puntos(0.0,0.0,0.0,1);
-    // tronco_piramide.draw_aristas(0.0,0.0,0.0,1);
-    // tronco_piramide.draw_solido_colores();
+       tronco_piramide.draw_aristas(0.0,0.0,0.0,1);
+    // tronco_piramide.draw_solido(0.5,0.0,0.0);
+       tronco_piramide.draw_solido_colores();
 }
 
 

@@ -1,4 +1,11 @@
 //**************************************************************************
+// Práctica 1
+// Versión del estudiante: Raúl Ramírez Abril
+// Grupo B3
+// Curso 2023/2024
+//**************************************************************************
+
+//**************************************************************************
 // Práctica 1 usando objetos
 //**************************************************************************
 
@@ -44,6 +51,7 @@ void asignar_gama_amarillos();
 void asignar_gama_verdes();
 void asignar_gama_rojos();
 void asignar_randomColor();
+void asigna_colores_default(int numCaras); //Implementación limitada a un máximo de 12 colores
 
 vector<_vertex3i> caras;
 vector<_vertex3f> colores;
