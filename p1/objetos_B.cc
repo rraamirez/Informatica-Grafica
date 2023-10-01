@@ -172,11 +172,20 @@ void _triangulos3D::asigna_colores_default(int numCaras){
     colores_predeterminados[10].x = 0.0; colores_predeterminados[10].y = 0.0; colores_predeterminados[10].z = 0.5; // Azul oscuro
     colores_predeterminados[11].x = 0.0; colores_predeterminados[11].y = 0.0; colores_predeterminados[11].z = 0.3; // Azul oscuro (variación)
 
-	for (int i = 0; i < numCaras && i < colores_predeterminados.size(); i++) {
-			colores[i].r = colores_predeterminados[i].x;
-			colores[i].g = colores_predeterminados[i].y;
-			colores[i].b = colores_predeterminados[i].z;
-		}
+	// for (int i = 0; i < numCaras && i < colores_predeterminados.size(); i++) {
+	// 		colores[i].r = colores_predeterminados[i].x;
+	// 		colores[i].g = colores_predeterminados[i].y;
+	// 		colores[i].b = colores_predeterminados[i].z;
+	// 	}
+	auto it = colores_predeterminados.begin();
+	int numAsignaciones = 0;
+	while(it != colores_predeterminados.end() && numAsignaciones < numCaras){
+		colores[numAsignaciones].r = (*it).x;
+		colores[numAsignaciones].g = (*it).y;
+		colores[numAsignaciones].b = (*it).z;
+		++numAsignaciones;
+		++it;
+	}
 }
 
 
