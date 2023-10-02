@@ -109,21 +109,20 @@ glEnd();
 
 void draw_objects()
 {
-
     // piramide.draw_puntos(0.0,0.0,0.0,1);
     // piramide.draw_aristas(0.0,0.0,0.0,1);
-     //piramide.draw_solido(0.5,0.0,0.0);
-     //piramide.draw_solido_colores();
+    //piramide.draw_solido(0.5,0.0,0.0);
+    //piramide.draw_solido_colores();
 
     // cubo.draw_puntos(0.0,0.0,0.0,1);
-     //cubo.draw_aristas(0.0,0.0,0.0,1);
+    //cubo.draw_aristas(0.0,0.0,0.0,1);
     // cubo.draw_solido(0.5,0.0,0.0);
-     //cubo.draw_solido_colores();
+    //cubo.draw_solido_colores();
 
     // tronco_piramide.draw_puntos(0.0,0.0,0.0,1);
-       tronco_piramide.draw_aristas(0.0,0.0,0.0,1);
+    tronco_piramide.draw_aristas(0.0,0.0,0.0,1);
     // tronco_piramide.draw_solido(0.5,0.0,0.0);
-      tronco_piramide.draw_solido_colores();
+    tronco_piramide.draw_solido_colores();
 }
 
 
@@ -212,7 +211,7 @@ Front_plane=1;
 Back_plane=1000;
 
 // se inicia la posicion del observador, en el eje z
-Observer_distance=3*Front_plane;
+Observer_distance=8*Front_plane;
 Observer_angle_x=0;
 Observer_angle_y=0;
 
