@@ -35,6 +35,7 @@ _tronco_piramide tronco_piramide(1,0.3,1.3);
 _objeto_ply  ply; 
 _rotacion rotacion; 
 _extrusion *extrusion;
+//_cilindro cilindro(0.5,1,12);
 
 // _objeto_ply *ply;
 
@@ -71,7 +72,6 @@ glFrustum(-Size_x,Size_x,-Size_y,Size_y,Front_plane,Back_plane);
 
 void change_observer()
 {
-
 // posicion del observador
 glMatrixMode(GL_MODELVIEW);
 glLoadIdentity();
@@ -86,7 +86,6 @@ glRotatef(Observer_angle_y,0,1,0);
 
 void draw_axis()
 {
-	
 glDisable(GL_LIGHTING);
 glLineWidth(2);
 glBegin(GL_LINES);
@@ -112,14 +111,13 @@ glEnd();
 
 void draw_objects()
 {
-
 switch (t_objeto){
 	case CUBO: cubo.draw(modo,1.0,0.0,0.0,5);break;
 	case TRONCO_PIRAMIDE: tronco_piramide.draw(modo,1.0,0.0,0.0,5);break;
 	case PIRAMIDE: piramide.draw(modo,1.0,0.0,0.0,5);break;
-        case OBJETO_PLY: ply.draw(modo,1.0,0.6,0.0,5);break;
-        case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,5);break;
-        case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
+    case OBJETO_PLY: ply.draw(modo,1.0,0.6,0.0,5);break;
+    case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,5);break;
+	case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
 	}
 
 }
@@ -262,7 +260,7 @@ perfil.push_back(aux);
 aux.x=1.0; aux.y=1.0; aux.z=0.0;
 perfil.push_back(aux);
 
-rotacion.parametros(perfil,6);
+rotacion.parametros(perfil,6,1,1,0);
 
 aux.x=1.0; aux.y=0.0; aux.z=1.0;
 poligono.push_back(aux);

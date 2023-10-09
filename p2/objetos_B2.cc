@@ -388,37 +388,87 @@ _rotacion::_rotacion()
 }
 
 
-void _rotacion::parametros(vector<_vertex3f> perfil, int num)
+void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tapa_in, int tapa_sup, int tipo)
 {
-int i,j;
-_vertex3f vertice_aux;
-_vertex3i cara_aux;
-int num_aux;
+	int i,j;
+	_vertex3f vertice_aux;
+	_vertex3i cara_aux;
+	int num_aux;
 
-// tratamiento de los vértices
+	// tratamiento de los vértices
 
-num_aux=perfil.size();
-vertices.resize(num_aux*num);
-for (j=0;j<num;j++)
-  {for (i=0;i<num_aux;i++)
-     {
-      vertice_aux.x=perfil[i].x*cos(2.0*M_PI*j/(1.0*num))+
-                    perfil[i].z*sin(2.0*M_PI*j/(1.0*num));
-      vertice_aux.z=-perfil[i].x*sin(2.0*M_PI*j/(1.0*num))+
-                    perfil[i].z*cos(2.0*M_PI*j/(1.0*num));
-      vertice_aux.y=perfil[i].y;
-      vertices[i+j*num_aux]=vertice_aux;
-     }
-  }
+	num_aux=perfil.size();
+	vertices.resize(num_aux*num);
+	for (j=0;j<num;j++)
+	{for (i=0;i<num_aux;i++)
+		{
+		vertice_aux.x=perfil[i].x*cos(2.0*M_PI*j/(1.0*num))+
+						perfil[i].z*sin(2.0*M_PI*j/(1.0*num));
+		vertice_aux.z=-perfil[i].x*sin(2.0*M_PI*j/(1.0*num))+
+						perfil[i].z*cos(2.0*M_PI*j/(1.0*num));
+		vertice_aux.y=perfil[i].y;
+		vertices[i+j*num_aux]=vertice_aux;
+		}
+	}
 
-// tratamiento de las caras 
+	// tratamiento de las caras 
+	//(giro)
+	for(j = 0; j<num;++j){
+		for(i = 0; i < num_aux-1; ++i){
+			//primera cara
+			cara_aux._0=i+j*num_aux;
+			cara_aux._1=i+((j+1)%num)*num_aux;
+			cara_aux._2=i+1+j*num_aux;
+			caras.push_back(cara_aux);
 
-     
-// tapa inferior
+			//segunda cara
+			cara_aux._0=i+((j+1)%num)*num_aux;
+			cara_aux._1=i+1+((j+1)%num)*num_aux;
+			cara_aux._2=i+1+j*num_aux;
+			caras.push_back(cara_aux);
+		}
+	}
+		
+	// tapa inferior
+	if(tapa_in==1){
 
- 
-// tapa superior
- 
+		//centro tapa
+		vertice_aux.x=0.0;
+		vertice_aux.y=perfil[0].y;
+		vertice_aux.z=0.0;
+		vertices.push_back(vertice_aux);
+
+		for(j = 0; j < num; ++j){
+			cara_aux._0=num_aux*num;
+			cara_aux._1=((j+1)%num)*num_aux;
+			cara_aux._2=j*num_aux;
+			caras.push_back(cara_aux); 
+		}
+
+	}
+
+	// tapa superior
+	if(tapa_sup==1){
+		//cetro tapa
+		vertice_aux.x=0.0;
+		vertice_aux.y=perfil[num_aux-1].y;
+		vertice_aux.z=0.0;
+		vertices.push_back(vertice_aux);
+		//caras tapa superior
+		if(tapa_in == 1 )cara_aux._0 = num_aux*num+1;
+		else cara_aux._0 = num_aux*num;
+
+		for(j = 0; j < num; ++j){
+			// cara_aux._0=num_aux*num+1;
+			cara_aux._1=j*num_aux+num_aux-1;
+			cara_aux._2=((j+1)%num)*num_aux+num_aux-1;
+			caras.push_back(cara_aux);
+		}
+	}	
+
+
+	colores.resize(caras.size());
+	asignar_randomColor();
 }
 
 
@@ -466,3 +516,9 @@ for (i=0;i<num_aux;i++)
 }
 
 
+
+
+// cilindro 
+/*
+
+*/
