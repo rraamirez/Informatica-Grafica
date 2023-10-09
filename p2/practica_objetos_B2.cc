@@ -12,7 +12,7 @@
 using namespace std;
 
 // tipos
-typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, EXTRUSION,TRONCO_PIRAMIDE} _tipo_objeto;
+typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, EXTRUSION,TRONCO_PIRAMIDE, CILINDRO} _tipo_objeto;
 _tipo_objeto t_objeto=CUBO;
 _modo   modo=POINTS;
 
@@ -35,7 +35,7 @@ _tronco_piramide tronco_piramide(1,0.3,1.3);
 _objeto_ply  ply; 
 _rotacion rotacion; 
 _extrusion *extrusion;
-//_cilindro cilindro(0.5,1,12);
+_cilindro cilindro(0.5,1,12);
 
 // _objeto_ply *ply;
 
@@ -117,6 +117,7 @@ switch (t_objeto){
 	case PIRAMIDE: piramide.draw(modo,1.0,0.0,0.0,5);break;
     case OBJETO_PLY: ply.draw(modo,1.0,0.6,0.0,5);break;
     case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,5);break;
+	case CILINDRO: cilindro.draw(modo,1.0,0.0,0.0,5);break;
 	case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
 	}
 
@@ -181,6 +182,7 @@ switch (toupper(Tecla1)){
         case 'O':t_objeto=OBJETO_PLY;break;	
         case 'R':t_objeto=ROTACION;break;
         case 'X':t_objeto=EXTRUSION;break;
+		case 'L': t_objeto=CILINDRO; break;
 	}
 glutPostRedisplay();
 }
@@ -297,7 +299,7 @@ glutInitWindowSize(Window_width,Window_high);
 
 // llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
 // al bucle de eventos)
-glutCreateWindow("PRACTICA - 2");
+glutCreateWindow("PRACTICA - 2 --Version de entrega-- Raul Ramirez");
 
 // asignación de la funcion llamada "dibujar" al evento de dibujo
 glutDisplayFunc(draw);

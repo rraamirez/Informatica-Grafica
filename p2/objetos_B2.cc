@@ -515,10 +515,14 @@ for (i=0;i<num_aux;i++)
    }   
 }
 
+//cilindro
+_cilindro::_cilindro(float radio, float altura, int lados){
+	vector<_vertex3f> perfil;
+	_vertex3f aux;
 
-
-
-// cilindro 
-/*
-
-*/
+	aux.x = radio; aux.y = -altura/2.0; aux.z = 0.0;
+	perfil.push_back(aux);
+	aux.x = radio; aux.y = altura/2.0; aux.z = 0.0;
+	perfil.push_back(aux);
+	parametros(perfil, lados, 1, 1, 0);
+}

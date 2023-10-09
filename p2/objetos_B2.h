@@ -122,3 +122,10 @@ public:
 };
 
 //objetos por revolucion especiales
+
+//CLASE CILINDRO
+class _cilindro: public _rotacion
+{
+public:
+	   _cilindro(float radio = 0.5, float altura = 1.0, int lados = 12);
+};
