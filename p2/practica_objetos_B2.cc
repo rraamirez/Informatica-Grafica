@@ -12,7 +12,7 @@
 using namespace std;
 
 // tipos
-typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, EXTRUSION,TRONCO_PIRAMIDE, CILINDRO} _tipo_objeto;
+typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, EXTRUSION,TRONCO_PIRAMIDE, CILINDRO, CONO} _tipo_objeto;
 _tipo_objeto t_objeto=CUBO;
 _modo   modo=POINTS;
 
@@ -36,6 +36,7 @@ _objeto_ply  ply;
 _rotacion rotacion; 
 _extrusion *extrusion;
 _cilindro cilindro(0.5,1,12);
+_cono cono(0.5,2,12);
 
 // _objeto_ply *ply;
 
@@ -119,6 +120,7 @@ switch (t_objeto){
     case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,5);break;
 	case CILINDRO: cilindro.draw(modo,1.0,0.0,0.0,5);break;
 	case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
+	case CONO: cono.draw(modo,1.0,0.0,0.0,5);break;
 	}
 
 }
@@ -183,6 +185,7 @@ switch (toupper(Tecla1)){
         case 'R':t_objeto=ROTACION;break;
         case 'X':t_objeto=EXTRUSION;break;
 		case 'L': t_objeto=CILINDRO; break;
+		case 'K': t_objeto=CONO; break;
 	}
 glutPostRedisplay();
 }

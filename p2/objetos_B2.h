@@ -109,7 +109,7 @@ void  parametros(vector<_vertex3f> perfil, int num,
 };
 //0 revolucion (coilindro?)
 //1 esfera
-// cono
+//2 cono
 
 //************************************************************************
 // objeto por extrusión
@@ -128,4 +128,11 @@ class _cilindro: public _rotacion
 {
 public:
 	   _cilindro(float radio = 0.5, float altura = 1.0, int lados = 12);
+};
+
+//clase cono
+class _cono: public _rotacion
+{
+public:
+	   _cono(float radio = 0.5, float altura = 2.0, int lados = 12);
 };

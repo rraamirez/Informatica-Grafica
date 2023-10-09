@@ -398,6 +398,7 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tapa_in, int t
 	// tratamiento de los vértices
 
 	num_aux=perfil.size();
+	if(tipo == 2) num_aux = 1; //si es cono
 	vertices.resize(num_aux*num);
 	for (j=0;j<num;j++)
 	{for (i=0;i<num_aux;i++)
@@ -409,6 +410,11 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tapa_in, int t
 		vertice_aux.y=perfil[i].y;
 		vertices[i+j*num_aux]=vertice_aux;
 		}
+	}
+
+	//??????
+	if(tipo > 1){
+
 	}
 
 	// tratamiento de las caras 
@@ -452,6 +458,7 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tapa_in, int t
 		//cetro tapa
 		vertice_aux.x=0.0;
 		vertice_aux.y=perfil[num_aux-1].y;
+		if (tipo == 2) vertice_aux.y=perfil[1].y;
 		vertice_aux.z=0.0;
 		vertices.push_back(vertice_aux);
 		//caras tapa superior
@@ -469,6 +476,31 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tapa_in, int t
 
 	colores.resize(caras.size());
 	asignar_randomColor();
+}
+
+//cilindro
+_cilindro::_cilindro(float radio, float altura, int lados){
+	vector<_vertex3f> perfil;
+	_vertex3f aux;
+
+	aux.x = radio; aux.y = -altura/2.0; aux.z = 0.0;
+	perfil.push_back(aux);
+	aux.x = radio; aux.y = altura/2.0; aux.z = 0.0;
+	perfil.push_back(aux);
+	parametros(perfil, lados, 1, 1, 0);
+}
+
+//cono
+_cono::_cono(float radio, float altura, int lados){
+	vector<_vertex3f> perfil;
+	_vertex3f aux;
+	_rotacion rotacion;
+
+	aux.x = radio; aux.y = 0; aux.z = 0.0;
+	perfil.push_back(aux);
+	aux.x = 0.0; aux.y = altura; aux.z = 0.0;
+	perfil.push_back(aux);
+	parametros(perfil, lados, 1, 1, 2);
 }
 
 
@@ -515,14 +547,3 @@ for (i=0;i<num_aux;i++)
    }   
 }
 
-//cilindro
-_cilindro::_cilindro(float radio, float altura, int lados){
-	vector<_vertex3f> perfil;
-	_vertex3f aux;
-
-	aux.x = radio; aux.y = -altura/2.0; aux.z = 0.0;
-	perfil.push_back(aux);
-	aux.x = radio; aux.y = altura/2.0; aux.z = 0.0;
-	perfil.push_back(aux);
-	parametros(perfil, lados, 1, 1, 0);
-}
