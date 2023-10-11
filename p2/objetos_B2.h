@@ -107,7 +107,7 @@ public:
 void  parametros(vector<_vertex3f> perfil, int num,
                  int tapa_in, int tapa_su, int tipo);
 };
-//0 revolucion (coilindro?)
+//0 revolucion 
 //1 esfera
 //2 cono
 
