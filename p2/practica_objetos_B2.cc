@@ -12,7 +12,7 @@
 using namespace std;
 
 // tipos
-typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, EXTRUSION,TRONCO_PIRAMIDE, CILINDRO, CONO} _tipo_objeto;
+typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, EXTRUSION,TRONCO_PIRAMIDE, CILINDRO, CONO, ESFERA} _tipo_objeto;
 _tipo_objeto t_objeto=CUBO;
 _modo   modo=POINTS;
 
@@ -37,6 +37,7 @@ _rotacion rotacion;
 _extrusion *extrusion;
 _cilindro cilindro(0.5,1,12);
 _cono cono(0.5,2,12);
+_esfera esfera(0.5,12,12);
 
 // _objeto_ply *ply;
 
@@ -121,6 +122,7 @@ switch (t_objeto){
 	case CILINDRO: cilindro.draw(modo,1.0,0.0,0.0,5);break;
 	case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
 	case CONO: cono.draw(modo,1.0,0.0,0.0,5);break;
+	case ESFERA: esfera.draw(modo,1.0,0.0,0.0,5);break;
 	}
 
 }
@@ -186,6 +188,7 @@ switch (toupper(Tecla1)){
         case 'X':t_objeto=EXTRUSION;break;
 		case 'L': t_objeto=CILINDRO; break;
 		case 'K': t_objeto=CONO; break;
+		case 'E': t_objeto=ESFERA; break;
 	}
 glutPostRedisplay();
 }
@@ -265,7 +268,7 @@ perfil.push_back(aux);
 aux.x=1.0; aux.y=1.0; aux.z=0.0;
 perfil.push_back(aux);
 
-rotacion.parametros(perfil,6,1,1,0);
+rotacion.parametros(perfil,6,1,1,2);
 
 aux.x=1.0; aux.y=0.0; aux.z=1.0;
 poligono.push_back(aux);

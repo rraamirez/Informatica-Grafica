@@ -136,3 +136,10 @@ class _cono: public _rotacion
 public:
 	   _cono(float radio = 0.5, float altura = 2.0, int lados = 12);
 };
+
+//esfera por rotación
+class _esfera: public _rotacion
+{
+public:
+	   _esfera(float radio, int n1, int n2);
+};

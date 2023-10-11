@@ -503,6 +503,20 @@ _cono::_cono(float radio, float altura, int lados){
 	parametros(perfil, lados, 1, 1, 2);
 }
 
+//esfera rotacion
+_esfera::_esfera(float radio, int n1, int n2){
+	vector<_vertex3f> perfil;
+	_vertex3f aux;
+	
+	for (size_t i = 0; i < n1; ++i)
+	{
+		aux.x = radio*cos(M_PI*i/(n1*1.0)-M_PI/2.0);
+		aux.y = radio*sin(M_PI*i/(n1*1.0)-M_PI/2.0);
+		aux.z = 0.0;
+		perfil.push_back(aux);
+	}
+	parametros(perfil, n2, 2, 1, 1);
+}
 
 
 //************************************************************************
@@ -545,5 +559,9 @@ for (i=0;i<num_aux;i++)
    c=c+1;    
       
    }   
+
+
+colores.resize(caras.size());
+asignar_randomColor();
 }
 
