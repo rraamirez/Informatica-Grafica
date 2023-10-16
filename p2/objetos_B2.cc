@@ -504,7 +504,7 @@ _cono::_cono(float radio, float altura, int lados){
 }
 
 //esfera rotacion
-_esfera::_esfera(float radio, int n1, int n2){
+_esfera::_esfera(float radio, int n1 /*latitud*/, int n2/*longitud*/){
 	vector<_vertex3f> perfil;
 	_vertex3f aux;
 	
@@ -565,3 +565,41 @@ colores.resize(caras.size());
 asignar_randomColor();
 }
 
+
+//************************************************************************
+// Rotación ply
+//************************************************************************
+
+_rotacion_PLY::_rotacion_PLY(){
+
+}
+
+void _rotacion_PLY::parametros_PLY(char *archivo, int num){
+	int n_ver,n_car,i;
+	vector<_vertex3f> perfil;
+	_vertex3f aux;
+
+	vector<float> ver_ply ;
+	vector<int>   car_ply ;
+	
+	_file_ply::read(archivo, ver_ply, car_ply );
+
+	n_ver=ver_ply.size()/3;
+	
+
+	printf("Number of vertices=%d", n_ver);
+
+	vertices.resize(n_ver);
+
+	//vertices
+	 for(i=0;i<n_ver;i++)
+	 {
+		 aux.x=ver_ply[i*3];
+		 aux.y=ver_ply[i*3+1];
+		 aux.z=ver_ply[i*3+2];
+		 perfil.push_back(aux);
+	 }
+
+	parametros(perfil, num, 1, 1, 1);
+
+}

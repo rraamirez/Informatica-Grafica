@@ -143,3 +143,11 @@ class _esfera: public _rotacion
 public:
 	   _esfera(float radio, int n1, int n2);
 };
+
+//clase ply para leer objetos por rotación
+class _rotacion_PLY: public _rotacion{
+public:
+	_rotacion_PLY();
+	void parametros_PLY(char *archivo, int num);
+};
+
