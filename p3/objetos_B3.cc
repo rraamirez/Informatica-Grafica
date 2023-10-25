@@ -167,6 +167,72 @@ for (i=0;i<n_c;i++)
   }
 }
 
+void _triangulos3D::asignar_gama_rojos(){
+	float start = 1.0;
+	for(int i = 0; i < colores_caras.size(); i++){
+		colores_caras[i].r = start; 
+		colores_caras[i].g = 0.0;
+		colores_caras[i].b = 0.0;
+		start-=1.0/colores_caras.size();
+	}
+}
+
+void _triangulos3D::asignar_gama_verdes(){
+    float start = 1.0;
+    for(int i = 0; i < colores_caras.size(); i++){
+        colores_caras[i].r = 0.0; 
+        colores_caras[i].g = start; 
+        colores_caras[i].b = 0.0; 
+        start -= 1.0 / colores_caras.size();
+    }
+}
+
+
+void _triangulos3D::asignar_gama_amarillos(){
+    float start = 1.0;
+	for(int i = 0; i < colores_caras.size(); i++){
+		colores_caras[i].r = start; 
+		colores_caras[i].g = start; 
+		colores_caras[i].b = 0.0; 
+		start -= 1.0 / colores_caras.size();
+	}
+}
+
+void _triangulos3D::asignar_randomColor(){
+	for(int i = 0; i < caras.size(); i++){
+		colores_caras[i].r = (rand() % 1000) / 1000.0;
+		colores_caras[i].g = (rand() % 1000) / 1000.0;
+		colores_caras[i].b = (rand() % 1000) / 1000.0;
+	}
+}
+
+void _triangulos3D::asigna_colores_default(int numCaras){
+	vector<_vertex3f> colores_predeterminados;
+	colores_predeterminados.resize(12);
+	colores_predeterminados[0].x = 1.0; colores_predeterminados[0].y = 0.0; colores_predeterminados[0].z = 0.0; // Rojo
+    colores_predeterminados[1].x = 0.0; colores_predeterminados[1].y = 1.0; colores_predeterminados[1].z = 0.0; // Verde
+    colores_predeterminados[2].x = 0.0; colores_predeterminados[2].y = 0.0; colores_predeterminados[2].z = 1.0; // Azul
+    colores_predeterminados[3].x = 1.0; colores_predeterminados[3].y = 1.0; colores_predeterminados[3].z = 0.0; // Amarillo
+    colores_predeterminados[4].x = 1.0; colores_predeterminados[4].y = 0.0; colores_predeterminados[4].z = 1.0; // Magenta
+    colores_predeterminados[5].x = 0.0; colores_predeterminados[5].y = 1.0; colores_predeterminados[5].z = 1.0; // Cian
+    colores_predeterminados[6].x = 0.5; colores_predeterminados[6].y = 0.5; colores_predeterminados[6].z = 0.0; // Amarillo oscuro
+    colores_predeterminados[7].x = 0.0; colores_predeterminados[7].y = 0.5; colores_predeterminados[7].z = 0.5; // Verde azulado
+    colores_predeterminados[8].x = 0.5; colores_predeterminados[8].y = 0.0; colores_predeterminados[8].z = 0.5; // Morado
+    colores_predeterminados[9].x = 0.5; colores_predeterminados[9].y = 0.5; colores_predeterminados[9].z = 0.5; // Gris
+    colores_predeterminados[10].x = 0.0; colores_predeterminados[10].y = 0.0; colores_predeterminados[10].z = 0.5; // Azul oscuro
+    colores_predeterminados[11].x = 0.0; colores_predeterminados[11].y = 0.0; colores_predeterminados[11].z = 0.3; // Azul oscuro (variación)
+
+	auto it = colores_predeterminados.begin();
+	int numAsignaciones = 0;
+	while(it != colores_predeterminados.end() && numAsignaciones < numCaras){
+		colores_caras[numAsignaciones].r = (*it).x;
+		colores_caras[numAsignaciones].g = (*it).y;
+		colores_caras[numAsignaciones].b = (*it).z;
+		++numAsignaciones;
+		++it;
+	}
+}
+
 
 //*************************************************************************
 // objetos o modelos
@@ -234,6 +300,55 @@ caras[5]._0=3;caras[5]._1=2;caras[5]._2=1;
 
 //colores de las caras
 colors_random();
+}
+
+_tronco_piramide::_tronco_piramide(float tam1, float tam2, float alt){
+	//vertices 
+	vertices.resize(8); 
+	vertices[0].x=-tam1;vertices[0].y=0;vertices[0].z=tam1;
+	vertices[1].x=tam1;vertices[1].y=0;vertices[1].z=tam1;
+	vertices[2].x=tam1;vertices[2].y=0;vertices[2].z=-tam1;
+	vertices[3].x=-tam1;vertices[3].y=0;vertices[3].z=-tam1;
+	vertices[4].x=-tam2;vertices[4].y=alt;vertices[4].z=tam2;
+	vertices[5].x=tam2;vertices[5].y=alt;vertices[5].z=tam2;
+	vertices[6].x=tam2;vertices[6].y=alt;vertices[6].z=-tam2;
+	vertices[7].x=-tam2;vertices[7].y=alt;vertices[7].z=-tam2;
+
+	// triangulos
+	caras.resize(12);
+	//cara baja
+	caras[0]._0=3;caras[0]._1=1;caras[0]._2=0;
+	caras[1]._0=3;caras[1]._1=2;caras[1]._2=1;
+
+	//cara arriba
+	caras[2]._0=4;caras[2]._1=5;caras[2]._2=6;
+	caras[3]._0=4;caras[3]._1=6;caras[3]._2=7;
+
+	//cara izquierda
+	caras[4]._0=3;caras[4]._1=0;caras[4]._2=7;
+	caras[5]._0=0;caras[5]._1=4;caras[5]._2=7;
+
+	//cara delante
+	caras[6]._0=0;caras[6]._1=1;caras[6]._2=4;
+	caras[7]._0=1;caras[7]._1=5;caras[7]._2=4;
+
+	//cara derecha
+	caras[8]._0=1;caras[8]._1=2;caras[8]._2=5;
+	caras[9]._0=2;caras[9]._1=6;caras[9]._2=5;
+
+	//cara trasera
+	caras[10]._0=2;caras[10]._1=3;caras[10]._2=6;
+	caras[11]._0=3;caras[11]._1=6;caras[11]._2=7;
+
+	
+
+	colores_caras.resize(12);
+	int numColores = caras.size();
+	asigna_colores_default(numColores);
+	//asignar_gama_amarillos();
+	//asignar_gama_verdes();
+	//asignar_randomColor();
+	//asignar_gama_rojos();
 }
 
 //*************************************************************************

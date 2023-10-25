@@ -44,6 +44,11 @@ void 	draw(_modo modo, float r, float g, float b, float grosor);
 /* asignación de colores */
 void 	colors_random();
 void 	colors_chess(float r1, float g1, float b1, float r2, float g2, float b2);
+void asignar_gama_amarillos();
+void asignar_gama_verdes();
+void asignar_gama_rojos();
+void asignar_randomColor();
+void asigna_colores_default(int numCaras); //Implementación limitada a un máximo de 12 colores
 
 
 vector<_vertex3i> caras;
@@ -76,6 +81,16 @@ public:
 
 	_piramide(float tam=0.5, float al=1.0);
 };
+
+//Clase tronco piramidal
+
+class _tronco_piramide: public _triangulos3D
+{
+public:
+
+	_tronco_piramide(float tam1=0.5, float tam2=0.2, float al=1.0);
+};
+
 
 //*************************************************************************
 // clase objeto ply

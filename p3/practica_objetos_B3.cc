@@ -12,7 +12,7 @@
 using namespace std;
 
 // tipos
-typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, CILINDRO, CONO, ESFERA, EXTRUSION, EXCAVADORA} _tipo_objeto;
+typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, EXTRUSION,TRONCO_PIRAMIDE, CILINDRO, CONO, ESFERA, ROTACION_PLY, EXCAVADORA} _tipo_objeto;
 _tipo_objeto t_objeto=CUBO;
 _modo   modo=POINTS;
 
@@ -31,13 +31,16 @@ int Window_x=50,Window_y=50,Window_width=650,Window_high=650;
 // objetos
 _cubo cubo;
 _piramide piramide(0.85,1.3);
+_tronco_piramide tronco_piramide(1,0.3,1.3);
 _objeto_ply  ply; 
-_rotacion rotacion;
-_cilindro cilindro(1,2,6); 
-_cono cono(1,2,6);
-_esfera esfera(1,6,6);
-_excavadora excavadora;
+_rotacion rotacion; 
 _extrusion *extrusion;
+_cilindro cilindro(0.5,1,12);
+_cono cono(0.5,2,12);
+_esfera esfera(0.5,50,50);
+_rotacion_PLY rotacion_PLY;
+_excavadora excavadora;
+
 
 // _objeto_ply *ply;
 
@@ -118,14 +121,17 @@ void draw_objects()
 
 switch (t_objeto){
 	case CUBO: cubo.draw(modo,1.0,0.0,0.0,5);break;
+	case TRONCO_PIRAMIDE: tronco_piramide.draw(modo,1.0,0.0,0.0,5);break;
 	case PIRAMIDE: piramide.draw(modo,1.0,0.0,0.0,5);break;
-        case OBJETO_PLY: ply.draw(modo,1.0,0.6,0.0,5);break;
-        case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,5);break;
-        case CILINDRO: cilindro.draw(modo,1.0,0.0,0.0,5);break;
-        case CONO: cono.draw(modo,1.0,0.0,0.0,5);break;
-        case ESFERA: esfera.draw(modo,1.0,0.0,0.0,5);break;
-        case EXCAVADORA: excavadora.draw(modo,1.0,0.0,0.0,5);break;
-        case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
+    case OBJETO_PLY: ply.draw(modo,1.0,0.6,0.0,5);break;
+    case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,5);break;
+	case CILINDRO: cilindro.draw(modo,1.0,0.0,0.0,5);break;
+	case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
+	case CONO: cono.draw(modo,1.0,0.0,0.0,5);break;
+	case ESFERA: esfera.draw(modo,1.0,0.0,0.0,5);break;
+	case ROTACION_PLY: rotacion_PLY.draw(modo,1.0,0.0,0.0,5);break;
+    case EXCAVADORA: excavadora.draw(modo,1.0,0.0,0.0,5);break;
+        
 	}
 
 }
@@ -184,14 +190,16 @@ switch (toupper(Tecla1)){
 	case '3':modo=SOLID;break;
 	case '4':modo=SOLID_COLORS;break;
         case 'P':t_objeto=PIRAMIDE;break;
+		case 'T':t_objeto=TRONCO_PIRAMIDE;break;
         case 'C':t_objeto=CUBO;break;
         case 'O':t_objeto=OBJETO_PLY;break;	
         case 'R':t_objeto=ROTACION;break;
-        case 'L':t_objeto=CILINDRO;break;
-        case 'N':t_objeto=CONO;break;
-        case 'E':t_objeto=ESFERA;break;
-        case 'A':t_objeto=EXCAVADORA;break;
         case 'X':t_objeto=EXTRUSION;break;
+		case 'L': t_objeto=CILINDRO; break;
+		case 'K': t_objeto=CONO; break;
+		case 'E': t_objeto=ESFERA; break;
+		case 'Y': t_objeto=ROTACION_PLY; break;
+        case 'A':t_objeto=EXCAVADORA;break;
 	}
 glutPostRedisplay();
 }
@@ -298,6 +306,7 @@ perfil.push_back(aux);
 
 
 rotacion.parametros(perfil,6,1,1,0);
+rotacion_PLY.parametros_PLY("seta",10);
 
 aux.x=1.0; aux.y=0.0; aux.z=1.0;
 poligono.push_back(aux);
