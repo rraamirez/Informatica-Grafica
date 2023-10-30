@@ -44,11 +44,12 @@ void 	draw(_modo modo, float r, float g, float b, float grosor);
 /* asignación de colores */
 void 	colors_random();
 void 	colors_chess(float r1, float g1, float b1, float r2, float g2, float b2);
+
 void asignar_gama_amarillos();
 void asignar_gama_verdes();
 void asignar_gama_rojos();
 void asignar_randomColor();
-void asigna_colores_default(int numCaras); //Implementación limitada a un máximo de 12 colores
+void asigna_colores_default(int numCaras); 
 
 
 vector<_vertex3i> caras;
@@ -82,15 +83,12 @@ public:
 	_piramide(float tam=0.5, float al=1.0);
 };
 
-//Clase tronco piramidal
-
 class _tronco_piramide: public _triangulos3D
 {
 public:
 
 	_tronco_piramide(float tam1=0.5, float tam2=0.2, float al=1.0);
 };
-
 
 //*************************************************************************
 // clase objeto ply
@@ -181,6 +179,22 @@ public:
        _rotacion_PLY();
 void  parametros_PLY(char *archivo, int num);
 };
+
+
+//************************************************************************
+// objeto montaña fractal
+//************************************************************************
+
+class _montana: public _triangulos3D
+{
+public:
+       _montana(int nivelmax, float sigma, float h);
+};
+
+// nivelmax, ha de ser par es el tamaño de la cuadrícula
+// sigma, se relaciona con la altura máxima de la montaña
+// h 0<=h<=1, dimensión de Hausdorff indica la forma del relieve, más suave 1
+
 
 
 //************************************************************************
