@@ -303,7 +303,8 @@ colors_random();
 }
 
 _tronco_piramide::_tronco_piramide(float tam1, float tam2, float alt){
-	//vertices 
+	
+  //vertices 
 	vertices.resize(8); 
 	vertices[0].x=-tam1;vertices[0].y=0;vertices[0].z=tam1;
 	vertices[1].x=tam1;vertices[1].y=0;vertices[1].z=tam1;
@@ -340,11 +341,12 @@ _tronco_piramide::_tronco_piramide(float tam1, float tam2, float alt){
 	caras[10]._0=2;caras[10]._1=3;caras[10]._2=6;
 	caras[11]._0=3;caras[11]._1=6;caras[11]._2=7;
 
-	
-
 	colores_caras.resize(12);
-	int numColores = caras.size();
-	asigna_colores_default(numColores);
+  asignar_gama_metalicos();
+
+	
+	// int numColores = caras.size();
+	// asigna_colores_default(numColores);
 	//asignar_gama_amarillos();
 	//asignar_gama_verdes();
 	//asignar_randomColor();
@@ -1082,4 +1084,46 @@ void _ala::draw(_modo modo, float r, float g, float b, float grosor)
       canion.draw(modo, r, g, b, grosor);
     glPopMatrix();
 
+};
+
+//clase puerta
+_puerta::_puerta()
+{
+  tronco.asignar_gama_metalicos();
+};
+
+
+void _puerta::draw(_modo modo, float r, float g, float b, float grosor)
+{
+    glPushMatrix();
+      glScalef(1.0, 0.15, 1.0);
+      tronco.draw(modo, r, g, b, grosor);
+    glPopMatrix();
+};
+
+//clase para la cabina
+ _cabinaX::_cabinaX()
+ {
+   cubo.asignar_gama_metalicos();
+   tronco.asignar_gama_metalicos();
+ };
+ 
+ 
+void _cabinaX::draw(_modo modo, float r, float g, float b, float grosor)
+{
+   glPushMatrix();
+     glScalef(1.0, 0.7, 1.0);
+     cubo.draw(modo, r, g, b, grosor);
+   glPopMatrix();
+
+  glPushMatrix();
+    glScalef(1.0, 0.7, 2.5);
+    glTranslatef(0,0,0.2);
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    tronco.draw(modo, r, g, b, grosor);
+  glPopMatrix();
+
+  glPushMatrix();
+    puerta.draw(modo, r, g, b, grosor);
+  glPopMatrix();
 };

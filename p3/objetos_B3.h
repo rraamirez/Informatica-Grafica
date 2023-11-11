@@ -98,8 +98,8 @@ public:
 class _tronco_piramide: public _triangulos3D
 {
 public:
-
-	_tronco_piramide(float tam1=0.5, float tam2=0.2, float al=1.0);
+       _tronco_piramide(float tam1=0.5, float tam2=0.2, float al=0.8);
+	//_tronco_piramide(float tam1, float tam2, float al);
 };
 
 //*************************************************************************
@@ -365,19 +365,33 @@ _canion canion;
 _motor motor;
 };
 
-
-
-
-/*
-
-class _cabinaX: public _triangulos3D
+class _puerta: public _triangulos3D
 {
+public:
+       _puerta();
+       void  draw(_modo modo, float r, float g, float b, float grosor);
+       
+       float tam1= 0.85;    float tam2= 0.65;       float alt= 0.15;
+
+protected: 
+_tronco_piramide tronco;
 
 };
+ class _cabinaX: public _triangulos3D
+ {
+ public:
+        _cabinaX();
+        void  draw(_modo modo, float r, float g, float b, float grosor);
+        float anchoCubo = 0.85;
+        float altoCubo = 1.0;
+ protected:
+ _cubo cubo;
+ _puerta puerta;
+ _tronco_piramide tronco; 
+ };
+ 
+ 
+ class _alaX: public _triangulos3D
+ {
+ };
 
-class _alaX: public _triangulos3D
-{
-
-};
-
-*/

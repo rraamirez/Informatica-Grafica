@@ -13,7 +13,7 @@ using namespace std;
 
 // tipos
 typedef enum{CUBO, PIRAMIDE, TRONCO_PIRAMIDE, OBJETO_PLY, ROTACION, ROTACION_PLY, CILINDRO, CONO, ESFERA, EXTRUSION,
-             MONTANA, EXCAVADORA, /*pruebas*/MOTOR, ALA, CANION} _tipo_objeto;
+             MONTANA, EXCAVADORA, /*pruebas*/MOTOR, ALA, CANION, PUERTA, CABINA} _tipo_objeto;
 _tipo_objeto t_objeto=CUBO;
 _modo   modo=POINTS;
 
@@ -32,7 +32,7 @@ int Window_x=50,Window_y=50,Window_width=650,Window_high=650;
 // objetos
 _cubo cubo;
 _piramide piramide(0.85,1.3);
-_tronco_piramide tronco_piramide(1,0.3,1.3);
+_tronco_piramide tronco_piramide(0.85,0.65,0.15);
 _objeto_ply  ply; 
 _rotacion rotacion;
 _cilindro cilindro(1,2,6); 
@@ -42,6 +42,8 @@ _rotacion_PLY rotacion_PLY;
 _excavadora excavadora;
 _extrusion *extrusion;
 _montana montana(6,0.9, 0.8);
+_puerta puerta;
+_cabinaX cabina;
 
 // _objeto_ply *ply;
 
@@ -146,6 +148,8 @@ switch (t_objeto){
     case MOTOR: motor.draw(modo,1.0,0.0,0.0,5);break;
     case ALA: ala.draw(modo,1.0,0.0,0.0,5);break;
     case CANION: canion.draw(modo,1.0,0.0,0.0,5);break;
+    case PUERTA: puerta.draw(modo,1.0,0.0,0.0,5);break;
+    case CABINA: cabina.draw(modo,1.0,0.0,0.0,5);break;
 	}
 
 }
@@ -236,6 +240,8 @@ switch (toupper(Tecla1)){
         case 'Z':t_objeto=MOTOR;break;
         case 'D':t_objeto=ALA;break;
         case '5':t_objeto=CANION;break;
+        case '6':t_objeto=PUERTA;break;
+        case '7':t_objeto=CABINA;break;
 
 	}
 glutPostRedisplay();
@@ -405,7 +411,7 @@ glutInitWindowSize(Window_width,Window_high);
 
 // llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
 // al bucle de eventos)
-glutCreateWindow("PRACTICA - 3");
+glutCreateWindow("PRACTICA - 3  VERSION DE ESTUDIANTE");
 
 // asignación de la funcion llamada "dibujar" al evento de dibujo
 glutDisplayFunc(draw);
