@@ -345,8 +345,12 @@ public:
        void draw(_modo modo, float r, float g, float b, float grosor);
 
        float radio, altura, num;
-       float radioMisil, alturaMisil, numMisil;  
-protected:
+       float radioMisil, alturaMisil, numMisil; 
+                     /*disparo*/
+       float disparo= 0.0f;
+       float max = 10.0f;
+       float min = 0.0f;
+
 _cilindro cilindro;
 _cilindro cilindroMisil;
 };
@@ -358,6 +362,7 @@ public:
        void  draw(_modo modo, float r, float g, float b, float grosor);
 
        float ancho, alto, fondo;
+
 
 _cubo cubo;
 _canion canion;
@@ -413,10 +418,16 @@ public:
        float giroPuertamax = -20.0f;
 
        /*giros*/
-       float giroAla;
+       float giroAla= 0.0f;
        float giroAlamin = 0.0f;
        float giroAlamax = 20.0f;
-       
+
+       /*giro punta*/
+       float giroPunta = 1.0f;
+       float giroPuntaMax = 360.0f;
+
+
+      
 
 _punta punta;
 _puerta puerta;

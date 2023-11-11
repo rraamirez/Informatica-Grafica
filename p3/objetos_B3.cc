@@ -1045,7 +1045,7 @@ void _canion::draw(_modo modo, float r, float g, float b, float grosor)
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(0, 0, alturaMisil);
+      glTranslatef(0, 0, alturaMisil-disparo);
       glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
       glScalef(radioMisil, alturaMisil, numMisil);
       cilindroMisil.draw(modo, r, g, b, grosor);
@@ -1172,6 +1172,7 @@ glPopMatrix();
 //montaje de la punta
 
 glPushMatrix();
+  glRotatef(giroPunta, 0.0f, 0.0f, 1.0f);
   glTranslatef(0, 0, 2.5);
   punta.draw(modo, r, g, b, grosor);
 glPopMatrix();
@@ -1180,6 +1181,7 @@ glPopMatrix();
 
 //alaIzdaSup
 glPushMatrix();
+  glRotatef(-giroAla, 0.0f, 0.0f, 1.0f);
   glTranslatef(-0.7, 0.2, -0.5);
   //glRotatef(-15.0f, 0.0f, 0.0f, 1.0f); /*combate*/
   ala1.draw(modo, r, g, b, grosor);
@@ -1187,6 +1189,7 @@ glPopMatrix();
 
 //alaDchaSup
 glPushMatrix();
+  glRotatef(giroAla, 0.0f, 0.0f, 1.0f);
   glTranslatef(0.7, 0.2, -0.5);
   glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
   //glRotatef(195.0f, 0.0f, 0.0f, 1.0f); /*combate*/
@@ -1196,6 +1199,7 @@ glPopMatrix();
 
 //alaIzdaInf
 glPushMatrix();
+glRotatef(giroAla, 0.0f, 0.0f, 1.0f);
   glTranslatef(-0.7, -0.2, -0.5);
   //glRotatef(15.0f, 0.0f, 0.0f, 1.0f); /*combate*/
   ala3.draw(modo, r, g, b, grosor);
@@ -1203,6 +1207,7 @@ glPopMatrix();
 
 //alaDchaInf
 glPushMatrix();
+  glRotatef(-giroAla, 0.0f, 0.0f, 1.0f);
   glTranslatef(0.7, -0.2, -0.5);
   glRotatef(-180.0f, 0.0f, 0.0f, 1.0f);
   //glRotatef(-195.0f, 0.0f, 0.0f, 1.0f); /*combate*/

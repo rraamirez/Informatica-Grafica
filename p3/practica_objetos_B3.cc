@@ -261,10 +261,10 @@ switch (toupper(Tecla1)){
         //implementacion final ala-x
         case '9':t_objeto=ALAX;break;
         case '0':if (pulsar_alax==0)
-                    {giro_puerta=1.0;
+                    {giro_puerta=0.5;
                      giro_punta=1.0;
-                     giro_alas=0.25;
-                     giro_canion=0.25;
+                     giro_alas=0.5;
+                     giro_canion=0.01;
                      pulsar_alax=1;
                      }
                  else
@@ -306,18 +306,55 @@ switch (Tecla1){
    case GLUT_KEY_F1:if(alaX.giroPuerta > alaX.giroPuertamax)alaX.giroPuerta-=5;break;
    //case GLUT_KEY_F2:excavadora.giro_cabina-=5;break;
     case GLUT_KEY_F2:if(alaX.giroPuerta < alaX.giroPuertamin)alaX.giroPuerta+=5;
-   case GLUT_KEY_F3:excavadora.giro_primer_brazo+=1;
-        if (excavadora.giro_primer_brazo > excavadora.giro_primer_brazo_max)
-            excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_max;break;
-   case GLUT_KEY_F4:excavadora.giro_primer_brazo-=1;
-        if (excavadora.giro_primer_brazo < excavadora.giro_primer_brazo_min)
-            excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_min;break;
-   case GLUT_KEY_F5:excavadora.giro_segundo_brazo+=1;
-        if (excavadora.giro_segundo_brazo > excavadora.giro_segundo_brazo_max)
-            excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_max;break;
-   case GLUT_KEY_F6:excavadora.giro_segundo_brazo-=1;
-        if (excavadora.giro_segundo_brazo < excavadora.giro_segundo_brazo_min) 
-            excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_min;break;
+   case GLUT_KEY_F3:if(alaX.giroPunta < alaX.giroPuntaMax )alaX.giroPunta+=10; break;
+   
+        // excavadora.giro_primer_brazo+=1;
+        // if (excavadora.giro_primer_brazo > excavadora.giro_primer_brazo_max)
+        //     excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_max;break;
+   case GLUT_KEY_F4:
+        if(alaX.giroAla < alaX.giroAlamax)alaX.giroAla+=5;
+        // excavadora.giro_primer_brazo-=1;
+        // if (excavadora.giro_primer_brazo < excavadora.giro_primer_brazo_min)
+        //     excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_min;
+            
+            break;
+   case GLUT_KEY_F5:
+   //no va
+   if(alaX.ala1.canion.disparo > 0.5){
+        alaX.ala1.canion.disparo = 0.0;
+        alaX.ala2.canion.disparo = 0.0;
+        alaX.ala3.canion.disparo = 0.0;
+        alaX.ala4.canion.disparo = 0.0;
+        break;
+    }
+
+    alaX.ala1.canion.disparo+=0.1;
+    alaX.ala2.canion.disparo+=0.1;
+    alaX.ala3.canion.disparo+=0.1;
+    alaX.ala4.canion.disparo+=0.1;
+        
+break;
+        // excavadora.giro_segundo_brazo+=1;
+        // if (excavadora.giro_segundo_brazo > excavadora.giro_segundo_brazo_max)
+        //     excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_max;break;
+   case GLUT_KEY_F6:
+        if(alaX.ala1.canion.disparo  < -0.5){
+        alaX.ala1.canion.disparo = 0.0;
+        alaX.ala2.canion.disparo = 0.0;
+        alaX.ala3.canion.disparo = 0.0;
+        alaX.ala4.canion.disparo = 0.0;
+        break;
+    }
+
+
+        alaX.ala1.canion.disparo-=0.1;
+        alaX.ala2.canion.disparo-=0.1;
+        alaX.ala3.canion.disparo-=0.1;
+        alaX.ala4.canion.disparo-=0.1;
+break;
+        // excavadora.giro_segundo_brazo-=1;
+        // if (excavadora.giro_segundo_brazo < excavadora.giro_segundo_brazo_min) 
+        //     excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_min;break;
    case GLUT_KEY_F7:excavadora.giro_pala+=1;
         if (excavadora.giro_pala > excavadora.giro_pala_max)
             excavadora.giro_pala = excavadora.giro_pala_max;break;
@@ -333,33 +370,76 @@ glutPostRedisplay();
 //***************************************************************************
 
 
+void animacion2()
+{
+int iters=0;
+switch (paso_alax){
+    case 0/*abrepuerta*/:alaX.giroPuerta-=giro_puerta;
+            if (alaX.giroPuerta < alaX.giroPuertamax) paso_alax=1; break;
+    case 1/*cierraPuerta*/:alaX.giroPuerta+=giro_puerta;
+            if (alaX.giroPuerta > alaX.giroPuertamin) paso_alax=2; break;
+    case 2/*giraPunta*/: 
+            if(alaX.giroPunta < alaX.giroPuntaMax )alaX.giroPunta+=10;
+            else paso_alax=3;
+    
+            //     excavadora.giro_pala-=giro2;
+            // if (excavadora.giro_pala < excavadora.giro_pala_min)
+            // {excavadora.giro_pala = excavadora.giro_pala_min;
+            //     paso=0;
+            //     excavadora.giro_cabina=0.0;
+            //     excavadora.giro_primer_brazo=0.0;
+            //     excavadora.giro_pala=0.0;} 
+
+
+            break;
+    case 3:
+            if(alaX.giroAla < alaX.giroAlamax)alaX.giroAla+=giro_alas;
+            else paso_alax=4;
+
+            break;
+    case 4:
+        if(alaX.ala1.canion.disparo < 0.5){
+            alaX.ala1.canion.disparo+=giro_canion;
+            alaX.ala2.canion.disparo+=giro_canion;
+            alaX.ala3.canion.disparo+=giro_canion;
+            alaX.ala4.canion.disparo+=giro_canion;
+        }
+        else{
+            alaX.ala1.canion.disparo = 0.0;
+            alaX.ala2.canion.disparo = 0.0;
+            alaX.ala3.canion.disparo = 0.0;
+            alaX.ala4.canion.disparo = 0.0;
+            paso_alax=5;
+        }
+        break;
+    case 5:
+       if(alaX.ala1.canion.disparo >  -0.5){
+            alaX.ala1.canion.disparo-=giro_canion;
+            alaX.ala2.canion.disparo-=giro_canion;
+            alaX.ala3.canion.disparo-=giro_canion;
+            alaX.ala4.canion.disparo-=giro_canion;
+        }
+        else{
+            alaX.giroPunta = 0;
+            alaX.giroAla = 0;
+            alaX.ala1.canion.disparo=0;
+            alaX.ala2.canion.disparo=0;
+            alaX.ala3.canion.disparo=0;
+            alaX.ala4.canion.disparo=0;
+            paso_alax=0;
+        }
+        break;
+
+
+
+}
+glutPostRedisplay();
+}
+
 void animacion()
 {
 
 switch (paso){
-    case 0/*abreYcierra puerta*/:excavadora.giro_cabina-=giro1;
-            if (excavadora.giro_cabina<-45) paso=1; break;
-    case 1/*giraPunta*/:excavadora.giro_primer_brazo-=giro3;
-            if (excavadora.giro_primer_brazo<-80) paso=2; break;
-    case 2/*abreAlas*/: excavadora.giro_pala-=giro2;
-            if (excavadora.giro_pala < excavadora.giro_pala_min)
-            {excavadora.giro_pala = excavadora.giro_pala_min;
-                paso=0;
-                excavadora.giro_cabina=0.0;
-                excavadora.giro_primer_brazo=0.0;
-                excavadora.giro_pala=0.0;} 
-            break;
-    case 3/*dispara*/:
-            break;
-   } 
-  
-glutPostRedisplay();
-}
-
-void animacion2()
-{
-
-switch (paso_alax){
     case 0/*abreYcierra puerta*/:alaX.giroPuerta-=giro_puerta;
             if (alaX.giroPuerta < alaX.giroPuertamin) paso_alax=1; break;
     case 1/*giraPunta*/:excavadora.giro_primer_brazo-=giro3;
