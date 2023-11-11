@@ -13,7 +13,7 @@ using namespace std;
 
 // tipos
 typedef enum{CUBO, PIRAMIDE, TRONCO_PIRAMIDE, OBJETO_PLY, ROTACION, ROTACION_PLY, CILINDRO, CONO, ESFERA, EXTRUSION,
-             MONTANA, EXCAVADORA} _tipo_objeto;
+             MONTANA, EXCAVADORA, /*pruebas*/MOTOR, ALA, CANION} _tipo_objeto;
 _tipo_objeto t_objeto=CUBO;
 _modo   modo=POINTS;
 
@@ -37,7 +37,7 @@ _objeto_ply  ply;
 _rotacion rotacion;
 _cilindro cilindro(1,2,6); 
 _cono cono(1,2,6);
-_esfera esfera(1,6,6);
+_esfera esfera(0.5,60,60);
 _rotacion_PLY rotacion_PLY;
 _excavadora excavadora;
 _extrusion *extrusion;
@@ -49,6 +49,11 @@ float giro1=0, giro2=0, giro3=0;
 int pulsar=0;
 int paso=0;
 
+
+/**Implementacion de pruebas*/
+_motor motor;
+_ala ala;
+_canion canion;
 
 //**************************************************************************
 //
@@ -136,6 +141,11 @@ switch (t_objeto){
         case EXCAVADORA: excavadora.draw(modo,1.0,0.0,0.0,5);break;
         case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
         case MONTANA: montana.draw(modo,0.2,0.7,0.0,1);break;
+
+    //IMPLEMENTACION DE PRUEBAS
+    case MOTOR: motor.draw(modo,1.0,0.0,0.0,5);break;
+    case ALA: ala.draw(modo,1.0,0.0,0.0,5);break;
+    case CANION: canion.draw(modo,1.0,0.0,0.0,5);break;
 	}
 
 }
@@ -218,6 +228,15 @@ switch (toupper(Tecla1)){
                      pulsar=0;
                      }    
                  break;
+
+        //IMPLEMENTACION DE PRUEBAS z d h 
+
+
+        
+        case 'Z':t_objeto=MOTOR;break;
+        case 'D':t_objeto=ALA;break;
+        case '5':t_objeto=CANION;break;
+
 	}
 glutPostRedisplay();
 }

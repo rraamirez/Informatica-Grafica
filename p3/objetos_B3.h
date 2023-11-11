@@ -51,6 +51,18 @@ void asignar_gama_rojos();
 void asignar_randomColor();
 void asigna_colores_default(int numCaras); 
 
+//colores metálicos para el ala-x
+enum MetallicType
+{
+    DEFAULT, // Por defecto, usa el color pasado como parámetro
+    GOLD,
+    SILVER,
+    BRONZE
+};
+
+void colors_metallic(MetallicType metallicType);
+void asignar_gama_metalicos();
+
 
 vector<_vertex3i> caras;
 vector<_vertex3f> colores_caras;
@@ -303,3 +315,69 @@ _brazo brazo;
 _cabina cabina;
 _sustentacion sustentacion;
 };
+
+
+
+/***********************************************************************************************/
+//Práctica 3 Versión del alumno: objeto jerárquico articulado ALA-X (Star Wars)
+/***********************************************************************************************/
+
+
+
+
+
+class _motor: public _triangulos3D
+{
+public:
+       _motor();
+       void draw(_modo modo, float r, float g, float b, float grosor);
+
+       float radio, altura, num;
+
+protected:
+_cilindro cilindro;
+};
+
+class _canion: public _triangulos3D
+{
+public:
+       _canion();
+       void draw(_modo modo, float r, float g, float b, float grosor);
+
+       float radio, altura, num;
+       float radioMisil, alturaMisil, numMisil;  
+protected:
+_cilindro cilindro;
+_cilindro cilindroMisil;
+};
+
+class _ala: public _triangulos3D
+{      
+public:
+       _ala();
+       void  draw(_modo modo, float r, float g, float b, float grosor);
+
+       float ancho, alto, fondo;
+
+protected:
+_cubo cubo;
+_canion canion;
+_motor motor;
+};
+
+
+
+
+/*
+
+class _cabinaX: public _triangulos3D
+{
+
+};
+
+class _alaX: public _triangulos3D
+{
+
+};
+
+*/

@@ -948,3 +948,138 @@ pala.draw(modo, r, g, b, grosor);
 glPopMatrix();
 };
 
+/***********************************************************************************************/
+//Práctica 3 Versión del alumno: objeto jerárquico articulado ALA-X (Star Wars)
+/***********************************************************************************************/
+
+void _triangulos3D::colors_metallic(MetallicType metallicType)
+    {
+        int i, n_c;
+        n_c = caras.size();
+        colores_caras.resize(n_c);
+
+        for (i = 0; i < n_c; i++)
+        {
+            switch (metallicType)
+            {
+            case GOLD:
+                colores_caras[i].r = 255 / 255.0f;
+                colores_caras[i].g = 215 / 255.0f;
+                colores_caras[i].b = 0 / 255.0f;
+                break;
+            case SILVER:
+                colores_caras[i].r = 192 / 255.0f;
+                colores_caras[i].g = 192 / 255.0f;
+                colores_caras[i].b = 192 / 255.0f;
+                break;
+            case BRONZE:
+                colores_caras[i].r = 205 / 255.0f;
+                colores_caras[i].g = 127 / 255.0f;
+                colores_caras[i].b = 50 / 255.0f;
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+void _triangulos3D::asignar_gama_metalicos(){
+    float start = 1.0;
+    float paso = 1.0 / colores_caras.size();
+
+    for (int i = 0; i < colores_caras.size(); i++) {
+        // Asignar el mismo valor a las componentes roja, verde y azul para obtener un tono de gris
+        colores_caras[i].r = start;
+        colores_caras[i].g = start;
+        colores_caras[i].b = start;
+
+        // Asegurar que el valor nunca sea menor que 0.0
+        start = std::max(start - paso, 0.0f);
+    }
+}
+
+//clase motor
+_motor::_motor()
+{
+  radio = 0.24;
+  altura = 0.55;
+  num = 0.2;
+  cilindro.asignar_gama_metalicos();
+};
+
+void _motor::draw(_modo modo, float r, float g, float b, float grosor)
+{
+    glPushMatrix();
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    //glTranslatef(0, 0, 0);
+    glScalef(radio, altura, num);
+    cilindro.draw(modo, r, g, b, grosor);
+    glPopMatrix();
+};
+
+//clase cañon
+_canion::_canion()
+{
+
+  radio = 0.24;
+  altura = 0.55;
+  num = 0.2;
+  cilindro.asignar_gama_metalicos();
+
+  radioMisil = 0.1;
+  alturaMisil = 1.3;
+  numMisil = 0.1;
+  cilindroMisil.asignar_gama_metalicos();
+
+};
+
+void _canion::draw(_modo modo, float r, float g, float b, float grosor)
+{
+    glPushMatrix();
+      glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+      // glTranslatef(0, 0, altura/2);
+      glScalef(radio, altura, num);
+      cilindro.draw(modo, r, g, b, grosor);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 0, alturaMisil);
+      glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+      glScalef(radioMisil, alturaMisil, numMisil);
+      cilindroMisil.draw(modo, r, g, b, grosor);
+    glPopMatrix();
+};
+
+//clase ala
+_ala::_ala()
+{
+  ancho=2.0;
+  alto=0.1;
+  fondo=1.05;
+  
+  cubo.asignar_gama_metalicos();
+};
+
+void _ala::draw(_modo modo, float r, float g, float b, float grosor)
+{
+    glPushMatrix();
+      glTranslatef(-fondo, 0, fondo/2);
+      glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
+      glScalef(ancho, alto, fondo);
+      //glTranslatef(0.5,0,0);
+      cubo.draw(modo, r, g, b, grosor);
+    glPopMatrix();
+
+    //ponemos motor
+    glPushMatrix();
+      glTranslatef(0, 0, fondo/2);
+      motor.draw(modo, r, g, b, grosor);
+    glPopMatrix();
+
+    //ponemos cañon
+    glPushMatrix();
+      glTranslatef(-2*fondo, -this->alto, fondo/2);
+      canion.draw(modo, r, g, b, grosor);
+    glPopMatrix();
+
+};
