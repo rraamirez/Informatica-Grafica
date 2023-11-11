@@ -1096,6 +1096,7 @@ _puerta::_puerta()
 void _puerta::draw(_modo modo, float r, float g, float b, float grosor)
 {
     glPushMatrix();
+    glTranslatef(0.0f, 0.0f, 0.5f);
       glScalef(1.0, 0.15, 1.0);
       tronco.draw(modo, r, g, b, grosor);
     glPopMatrix();
@@ -1161,9 +1162,10 @@ glPopMatrix();
 
 //montaje de la puerta
 glPushMatrix();
-  glTranslatef(0, 0.30, 0.9);
-  glRotatef(6.0f, 1.0f, 0.0f, 0.0f);
-  glScalef(0.7, 0.7, 0.7);
+  //glRotatef(3.0f, 1.0f, 0.0f, 0.0f);
+  glTranslatef(0.0, 0.32, 0.9);
+  glScalef(0.6, 0.6, 0.7);
+  glRotatef(giroPuerta, 1.0f, 0.0f, 0.0f);
   puerta.draw(modo, r, g, b, grosor);
 glPopMatrix();
 

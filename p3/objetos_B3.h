@@ -359,7 +359,6 @@ public:
 
        float ancho, alto, fondo;
 
-protected:
 _cubo cubo;
 _canion canion;
 _motor motor;
@@ -407,11 +406,20 @@ class _alaX: public _triangulos3D
 public:
        _alaX();
        void  draw(_modo modo, float r, float g, float b, float grosor);
+
+       /*atributos de movimiento*/
+       float giroPuerta = 12.0f;
+       float giroPuertamin = 12.0f;
+       float giroPuertamax = -20.0f;
+
+       /*giros*/
+       float giroAla;
+       float giroAlamin = 0.0f;
+       float giroAlamax = 20.0f;
        
-protected:
+
 _punta punta;
 _puerta puerta;
-
 _cabinaX cabinaX;
 
 /*

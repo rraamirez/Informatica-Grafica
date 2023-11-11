@@ -52,6 +52,7 @@ int pulsar=0;
 int paso=0;
 
 
+
 /**Implementacion de pruebas*/
 _motor motor;
 _ala ala;
@@ -60,6 +61,15 @@ _puerta puerta;
 _cabinaX cabina;
 _punta punta;
 _alaX alaX;
+
+//movimientos
+float giro_puerta=0.0;
+float giro_alas=0.0;
+float giro_canion=0.0;
+float giro_punta=0.0;
+int paso_alax=0;
+int pulsar_alax=0;
+
 
 //**************************************************************************
 //
@@ -250,6 +260,21 @@ switch (toupper(Tecla1)){
 
         //implementacion final ala-x
         case '9':t_objeto=ALAX;break;
+        case '0':if (pulsar_alax==0)
+                    {giro_puerta=1.0;
+                     giro_punta=1.0;
+                     giro_alas=0.25;
+                     giro_canion=0.25;
+                     pulsar_alax=1;
+                     }
+                 else
+                    {giro_puerta=0.0;
+                     giro_punta=0.0;
+                     giro_alas=0.0;
+                     giro_canion=0.0;
+                     pulsar_alax=0;
+                     }    
+                 break;
 
 	}
 glutPostRedisplay();
@@ -276,8 +301,11 @@ switch (Tecla1){
    case GLUT_KEY_PAGE_UP:Observer_distance*=1.2;break;
    case GLUT_KEY_PAGE_DOWN:Observer_distance/=1.2;break;
 	
-   case GLUT_KEY_F1:excavadora.giro_cabina+=5;break;
-   case GLUT_KEY_F2:excavadora.giro_cabina-=5;break;
+   //case GLUT_KEY_F1:excavadora.giro_cabina+=5;break;
+
+   case GLUT_KEY_F1:if(alaX.giroPuerta > alaX.giroPuertamax)alaX.giroPuerta-=5;break;
+   //case GLUT_KEY_F2:excavadora.giro_cabina-=5;break;
+    case GLUT_KEY_F2:if(alaX.giroPuerta < alaX.giroPuertamin)alaX.giroPuerta+=5;
    case GLUT_KEY_F3:excavadora.giro_primer_brazo+=1;
         if (excavadora.giro_primer_brazo > excavadora.giro_primer_brazo_max)
             excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_max;break;
@@ -309,22 +337,50 @@ void animacion()
 {
 
 switch (paso){
-  case 0:excavadora.giro_cabina-=giro1;
-         if (excavadora.giro_cabina<-45) paso=1; break;
-  case 1:excavadora.giro_primer_brazo-=giro3;
-         if (excavadora.giro_primer_brazo<-80) paso=2; break;
-  case 2: excavadora.giro_pala-=giro2;
-        if (excavadora.giro_pala < excavadora.giro_pala_min)
-           {excavadora.giro_pala = excavadora.giro_pala_min;
-            paso=0;
-            excavadora.giro_cabina=0.0;
-            excavadora.giro_primer_brazo=0.0;
-            excavadora.giro_pala=0.0;} 
-        break;
+    case 0/*abreYcierra puerta*/:excavadora.giro_cabina-=giro1;
+            if (excavadora.giro_cabina<-45) paso=1; break;
+    case 1/*giraPunta*/:excavadora.giro_primer_brazo-=giro3;
+            if (excavadora.giro_primer_brazo<-80) paso=2; break;
+    case 2/*abreAlas*/: excavadora.giro_pala-=giro2;
+            if (excavadora.giro_pala < excavadora.giro_pala_min)
+            {excavadora.giro_pala = excavadora.giro_pala_min;
+                paso=0;
+                excavadora.giro_cabina=0.0;
+                excavadora.giro_primer_brazo=0.0;
+                excavadora.giro_pala=0.0;} 
+            break;
+    case 3/*dispara*/:
+            break;
    } 
   
 glutPostRedisplay();
 }
+
+void animacion2()
+{
+
+switch (paso_alax){
+    case 0/*abreYcierra puerta*/:alaX.giroPuerta-=giro_puerta;
+            if (alaX.giroPuerta < alaX.giroPuertamin) paso_alax=1; break;
+    case 1/*giraPunta*/:excavadora.giro_primer_brazo-=giro3;
+            if (excavadora.giro_primer_brazo<-80) paso_alax=2; break;
+    case 2/*abreAlas*/: excavadora.giro_pala-=giro2;
+            if (excavadora.giro_pala < excavadora.giro_pala_min)
+            {
+                excavadora.giro_pala = excavadora.giro_pala_min;
+                paso_alax=0;
+                excavadora.giro_cabina=0.0;
+                excavadora.giro_primer_brazo=0.0;
+                excavadora.giro_pala=0.0;
+                } 
+            break;
+    case 3/*dispara*/:
+            break;
+   } 
+  
+glutPostRedisplay();
+}
+
 
 //***************************************************************************
 // Funcion de incializacion
@@ -431,6 +487,7 @@ glutKeyboardFunc(normal_key);
 glutSpecialFunc(special_key);
 
 glutIdleFunc(animacion);
+glutIdleFunc(animacion2);
 
 // funcion de inicialización
 initialize();
