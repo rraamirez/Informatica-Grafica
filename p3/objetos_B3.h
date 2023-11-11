@@ -386,12 +386,43 @@ _tronco_piramide tronco;
         float altoCubo = 1.0;
  protected:
  _cubo cubo;
- _puerta puerta;
  _tronco_piramide tronco; 
+
  };
- 
- 
- class _alaX: public _triangulos3D
+
+class _punta: public _triangulos3D
  {
+public: 
+       _punta();
+       void  draw(_modo modo, float r, float g, float b, float grosor);
+       
+protected: 
+_piramide punta;
+
  };
+ 
+ 
+class _alaX: public _triangulos3D
+{
+public:
+       _alaX();
+       void  draw(_modo modo, float r, float g, float b, float grosor);
+       
+protected:
+_punta punta;
+_puerta puerta;
+
+_cabinaX cabinaX;
+
+/*
+Ala 1 es el ala superior izquierda (mirando de frente)
+Ala 2 es el ala superior derecha (mirando de frente)
+Ala 3 es el ala inferior izquierda (mirando de frente)
+Ala 4 es el ala inferior derecha (mirando de frente)
+*/
+_ala ala1;
+_ala ala2;
+_ala ala3;
+_ala ala4;
+};
 

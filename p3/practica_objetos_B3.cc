@@ -13,7 +13,7 @@ using namespace std;
 
 // tipos
 typedef enum{CUBO, PIRAMIDE, TRONCO_PIRAMIDE, OBJETO_PLY, ROTACION, ROTACION_PLY, CILINDRO, CONO, ESFERA, EXTRUSION,
-             MONTANA, EXCAVADORA, /*pruebas*/MOTOR, ALA, CANION, PUERTA, CABINA} _tipo_objeto;
+             MONTANA, EXCAVADORA, /*pruebas*/MOTOR, ALA, CANION, PUERTA, CABINA, PUNTA, /*MODELO FINAL*/ ALAX} _tipo_objeto;
 _tipo_objeto t_objeto=CUBO;
 _modo   modo=POINTS;
 
@@ -42,8 +42,8 @@ _rotacion_PLY rotacion_PLY;
 _excavadora excavadora;
 _extrusion *extrusion;
 _montana montana(6,0.9, 0.8);
-_puerta puerta;
-_cabinaX cabina;
+
+
 
 // _objeto_ply *ply;
 
@@ -56,6 +56,10 @@ int paso=0;
 _motor motor;
 _ala ala;
 _canion canion;
+_puerta puerta;
+_cabinaX cabina;
+_punta punta;
+_alaX alaX;
 
 //**************************************************************************
 //
@@ -150,6 +154,9 @@ switch (t_objeto){
     case CANION: canion.draw(modo,1.0,0.0,0.0,5);break;
     case PUERTA: puerta.draw(modo,1.0,0.0,0.0,5);break;
     case CABINA: cabina.draw(modo,1.0,0.0,0.0,5);break;
+    case PUNTA: punta.draw(modo,1.0,0.0,0.0,5);break;
+    //implementacion final ala-x
+    case ALAX: alaX.draw(modo,1.0,0.0,0.0,5);break;
 	}
 
 }
@@ -234,14 +241,15 @@ switch (toupper(Tecla1)){
                  break;
 
         //IMPLEMENTACION DE PRUEBAS z d h 
-
-
-        
         case 'Z':t_objeto=MOTOR;break;
         case 'D':t_objeto=ALA;break;
         case '5':t_objeto=CANION;break;
         case '6':t_objeto=PUERTA;break;
         case '7':t_objeto=CABINA;break;
+        case '8':t_objeto=PUNTA;break;
+
+        //implementacion final ala-x
+        case '9':t_objeto=ALAX;break;
 
 	}
 glutPostRedisplay();

@@ -1080,7 +1080,7 @@ void _ala::draw(_modo modo, float r, float g, float b, float grosor)
 
     //ponemos cañon
     glPushMatrix();
-      glTranslatef(-2*fondo, -this->alto, fondo/2);
+      glTranslatef(-2*fondo, 0, fondo/2);
       canion.draw(modo, r, g, b, grosor);
     glPopMatrix();
 
@@ -1123,7 +1123,89 @@ void _cabinaX::draw(_modo modo, float r, float g, float b, float grosor)
     tronco.draw(modo, r, g, b, grosor);
   glPopMatrix();
 
+};
+
+//CLASE PARA LA PUNTA  
+
+_punta::_punta()
+{
+  punta.asignar_gama_metalicos();
+};
+
+void _punta::draw(_modo modo, float r, float g, float b, float grosor)
+{
   glPushMatrix();
-    puerta.draw(modo, r, g, b, grosor);
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    glScalef(0.5, 0.5, 0.5);
+    punta.draw(modo, r, g, b, grosor);
   glPopMatrix();
+};
+
+
+//**********************
+//Montaje de modelo final
+//***********************
+
+_alaX::_alaX()
+{
+
+};
+
+void _alaX::draw(_modo modo, float r, float g, float b, float grosor)
+{
+
+//montaje de la cabina
+glPushMatrix();
+  cabinaX.draw(modo, r, g, b, grosor);
+glPopMatrix();
+
+//montaje de la puerta
+glPushMatrix();
+  glTranslatef(0, 0.30, 0.9);
+  glRotatef(6.0f, 1.0f, 0.0f, 0.0f);
+  glScalef(0.7, 0.7, 0.7);
+  puerta.draw(modo, r, g, b, grosor);
+glPopMatrix();
+
+//montaje de la punta
+
+glPushMatrix();
+  glTranslatef(0, 0, 2.5);
+  punta.draw(modo, r, g, b, grosor);
+glPopMatrix();
+
+//montaje de las 4 alas
+
+//alaIzdaSup
+glPushMatrix();
+  glTranslatef(-0.7, 0.2, -0.5);
+  //glRotatef(-15.0f, 0.0f, 0.0f, 1.0f); /*combate*/
+  ala1.draw(modo, r, g, b, grosor);
+glPopMatrix();
+
+//alaDchaSup
+glPushMatrix();
+  glTranslatef(0.7, 0.2, -0.5);
+  glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
+  //glRotatef(195.0f, 0.0f, 0.0f, 1.0f); /*combate*/
+  ala2.draw(modo, r, g, b, grosor);
+glPopMatrix();
+
+
+//alaIzdaInf
+glPushMatrix();
+  glTranslatef(-0.7, -0.2, -0.5);
+  //glRotatef(15.0f, 0.0f, 0.0f, 1.0f); /*combate*/
+  ala3.draw(modo, r, g, b, grosor);
+glPopMatrix();
+
+//alaDchaInf
+glPushMatrix();
+  glTranslatef(0.7, -0.2, -0.5);
+  glRotatef(-180.0f, 0.0f, 0.0f, 1.0f);
+  //glRotatef(-195.0f, 0.0f, 0.0f, 1.0f); /*combate*/
+  ala4.draw(modo, r, g, b, grosor);
+glPopMatrix();
+
+
 };
