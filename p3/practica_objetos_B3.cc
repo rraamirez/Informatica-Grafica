@@ -158,15 +158,15 @@ switch (t_objeto){
         case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
         case MONTANA: montana.draw(modo,0.2,0.7,0.0,1);break;
 
-    //IMPLEMENTACION DE PRUEBAS
-    case MOTOR: motor.draw(modo,1.0,0.0,0.0,5);break;
-    case ALA: ala.draw(modo,1.0,0.0,0.0,5);break;
-    case CANION: canion.draw(modo,1.0,0.0,0.0,5);break;
-    case PUERTA: puerta.draw(modo,1.0,0.0,0.0,5);break;
-    case CABINA: cabina.draw(modo,1.0,0.0,0.0,5);break;
-    case PUNTA: punta.draw(modo,1.0,0.0,0.0,5);break;
-    //implementacion final ala-x
-    case ALAX: alaX.draw(modo,1.0,0.0,0.0,5);break;
+        //IMPLEMENTACION DE PRUEBAS
+        case MOTOR: motor.draw(modo,1.0,0.0,0.0,5);break;
+        case ALA: ala.draw(modo,1.0,0.0,0.0,5);break;
+        case CANION: canion.draw(modo,1.0,0.0,0.0,5);break;
+        case PUERTA: puerta.draw(modo,1.0,0.0,0.0,5);break;
+        case CABINA: cabina.draw(modo,1.0,0.0,0.0,5);break;
+        case PUNTA: punta.draw(modo,1.0,0.0,0.0,5);break;
+        //implementacion final ala-x
+        case ALAX: alaX.draw(modo,1.0,0.0,0.0,5);break;
 	}
 
 }
@@ -233,10 +233,10 @@ switch (toupper(Tecla1)){
         case 'N':t_objeto=CONO;break;
         case 'E':t_objeto=ESFERA;break;
         case 'Y': t_objeto=ROTACION_PLY; break;
-        case 'A':t_objeto=EXCAVADORA;break;
+        case '9':t_objeto=EXCAVADORA;break;
         case 'X':t_objeto=EXTRUSION;break;
         case 'M':t_objeto=MONTANA;break;
-        case 'S':if (pulsar==0)
+        case '0':if (pulsar==0)
                     {giro1=1.0;
                      giro2=1.0;
                      giro3=0.25;
@@ -259,8 +259,8 @@ switch (toupper(Tecla1)){
         case '8':t_objeto=PUNTA;break;
 
         //implementacion final ala-x
-        case '9':t_objeto=ALAX;break;
-        case '0':if (pulsar_alax==0)
+        case 'A':t_objeto=ALAX;break;
+        case 'S':if (pulsar_alax==0)
                     {giro_puerta=0.5;
                      giro_punta=1.0;
                      giro_alas=0.5;
@@ -301,42 +301,28 @@ switch (Tecla1){
    case GLUT_KEY_PAGE_UP:Observer_distance*=1.2;break;
    case GLUT_KEY_PAGE_DOWN:Observer_distance/=1.2;break;
 	
-   //case GLUT_KEY_F1:excavadora.giro_cabina+=5;break;
 
    case GLUT_KEY_F1:if(alaX.giroPuerta > alaX.giroPuertamax)alaX.giroPuerta-=5;break;
-   //case GLUT_KEY_F2:excavadora.giro_cabina-=5;break;
-    case GLUT_KEY_F2:if(alaX.giroPuerta < alaX.giroPuertamin)alaX.giroPuerta+=5;
+   case GLUT_KEY_F2:if(alaX.giroPuerta < alaX.giroPuertamin)alaX.giroPuerta+=5;
    case GLUT_KEY_F3:if(alaX.giroPunta < alaX.giroPuntaMax )alaX.giroPunta+=10; break;
-   
-        // excavadora.giro_primer_brazo+=1;
-        // if (excavadora.giro_primer_brazo > excavadora.giro_primer_brazo_max)
-        //     excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_max;break;
    case GLUT_KEY_F4:
         if(alaX.giroAla < alaX.giroAlamax)alaX.giroAla+=5;
-        // excavadora.giro_primer_brazo-=1;
-        // if (excavadora.giro_primer_brazo < excavadora.giro_primer_brazo_min)
-        //     excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_min;
-            
             break;
    case GLUT_KEY_F5:
-   //no va
-   if(alaX.ala1.canion.disparo > 0.5){
-        alaX.ala1.canion.disparo = 0.0;
-        alaX.ala2.canion.disparo = 0.0;
-        alaX.ala3.canion.disparo = 0.0;
-        alaX.ala4.canion.disparo = 0.0;
-        break;
-    }
+    if(alaX.ala1.canion.disparo > 0.5){
+            alaX.ala1.canion.disparo = 0.0;
+            alaX.ala2.canion.disparo = 0.0;
+            alaX.ala3.canion.disparo = 0.0;
+            alaX.ala4.canion.disparo = 0.0;
+            break;
+        }
 
-    alaX.ala1.canion.disparo+=0.1;
-    alaX.ala2.canion.disparo+=0.1;
-    alaX.ala3.canion.disparo+=0.1;
-    alaX.ala4.canion.disparo+=0.1;
-        
-break;
-        // excavadora.giro_segundo_brazo+=1;
-        // if (excavadora.giro_segundo_brazo > excavadora.giro_segundo_brazo_max)
-        //     excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_max;break;
+        alaX.ala1.canion.disparo+=0.1;
+        alaX.ala2.canion.disparo+=0.1;
+        alaX.ala3.canion.disparo+=0.1;
+        alaX.ala4.canion.disparo+=0.1;
+        break;
+
    case GLUT_KEY_F6:
         if(alaX.ala1.canion.disparo  < -0.5){
         alaX.ala1.canion.disparo = 0.0;
@@ -351,16 +337,7 @@ break;
         alaX.ala2.canion.disparo-=0.1;
         alaX.ala3.canion.disparo-=0.1;
         alaX.ala4.canion.disparo-=0.1;
-break;
-        // excavadora.giro_segundo_brazo-=1;
-        // if (excavadora.giro_segundo_brazo < excavadora.giro_segundo_brazo_min) 
-        //     excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_min;break;
-   case GLUT_KEY_F7:excavadora.giro_pala+=1;
-        if (excavadora.giro_pala > excavadora.giro_pala_max)
-            excavadora.giro_pala = excavadora.giro_pala_max;break;
-   case GLUT_KEY_F8:excavadora.giro_pala-=1;
-        if (excavadora.giro_pala < excavadora.giro_pala_min)
-            excavadora.giro_pala = excavadora.giro_pala_min;break;
+        break;
 	}
 glutPostRedisplay();
 }
@@ -381,16 +358,6 @@ switch (paso_alax){
     case 2/*giraPunta*/: 
             if(alaX.giroPunta < alaX.giroPuntaMax )alaX.giroPunta+=10;
             else paso_alax=3;
-    
-            //     excavadora.giro_pala-=giro2;
-            // if (excavadora.giro_pala < excavadora.giro_pala_min)
-            // {excavadora.giro_pala = excavadora.giro_pala_min;
-            //     paso=0;
-            //     excavadora.giro_cabina=0.0;
-            //     excavadora.giro_primer_brazo=0.0;
-            //     excavadora.giro_pala=0.0;} 
-
-
             break;
     case 3:
             if(alaX.giroAla < alaX.giroAlamax)alaX.giroAla+=giro_alas;
@@ -429,8 +396,6 @@ switch (paso_alax){
             paso_alax=0;
         }
         break;
-
-
 
 }
 glutPostRedisplay();
@@ -555,7 +520,7 @@ glutInitWindowSize(Window_width,Window_high);
 
 // llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
 // al bucle de eventos)
-glutCreateWindow("PRACTICA - 3  VERSION DE ESTUDIANTE");
+glutCreateWindow("PRACTICA - 3  RAUL RAMIREZ ABRIL");
 
 // asignación de la funcion llamada "dibujar" al evento de dibujo
 glutDisplayFunc(draw);

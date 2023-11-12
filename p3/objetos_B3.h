@@ -429,19 +429,19 @@ public:
 
       
 
-_punta punta;
-_puerta puerta;
-_cabinaX cabinaX;
+       _punta punta;
+       _puerta puerta;
+       _cabinaX cabinaX;
 
-/*
-Ala 1 es el ala superior izquierda (mirando de frente)
-Ala 2 es el ala superior derecha (mirando de frente)
-Ala 3 es el ala inferior izquierda (mirando de frente)
-Ala 4 es el ala inferior derecha (mirando de frente)
-*/
-_ala ala1;
-_ala ala2;
-_ala ala3;
-_ala ala4;
+       /*
+       Ala 1 es el ala superior izquierda (mirando de frente)
+       Ala 2 es el ala superior derecha (mirando de frente)
+       Ala 3 es el ala inferior izquierda (mirando de frente)
+       Ala 4 es el ala inferior derecha (mirando de frente)
+       */
+       _ala ala1;
+       _ala ala2;
+       _ala ala3;
+       _ala ala4;
 };
 
