@@ -130,6 +130,66 @@ switch (modo){
 }
 
 //*************************************************************************
+// normales 
+//*************************************************************************
+
+void _triangulos3D::calcular_normales_caras()
+{
+int i, n_c;
+_vertex3f va, vb;
+float modulo;
+
+n_c=caras.size();
+normales_caras.resize(n_c);
+for (i=0;i<n_c;i++)
+  {va=vertices[caras[i]._1]-vertices[caras[i]._0];
+   vb=vertices[caras[i]._2]-vertices[caras[i]._1];
+   normales_caras[i].x=va.y*vb.z-va.z*vb.y;
+   normales_caras[i].y=va.z*vb.x-va.x*vb.z;   
+   normales_caras[i].z=va.x*vb.y-va.y*vb.x; 
+   modulo=sqrt(normales_caras[i].x*normales_caras[i].x+
+              normales_caras[i].y*normales_caras[i].y+
+              normales_caras[i].z*normales_caras[i].z);
+   normales_caras[i].x/=modulo;
+   normales_caras[i].y/=modulo;   
+   normales_caras[i].z/=modulo;     
+  }
+}
+
+//*************************************************************************
+
+void _triangulos3D::calcular_normales_vertices()
+{
+int i, n_c, n_v;
+float modulo;
+
+n_v=vertices.size();
+normales_vertices.resize(n_v);
+
+n_c=caras.size();
+
+for (i=0;i<n_v;i++)
+ normales_vertices[i]=_vertex3f(0.0,0.0,0.0);
+ 
+for (i=0;i<n_c;i++)
+  {
+  normales_vertices[caras[i]._0]+=normales_caras[i];
+  normales_vertices[caras[i]._1]+=normales_caras[i];
+  normales_vertices[caras[i]._2]+=normales_caras[i];
+  } 
+  
+for (i=0;i<n_v;i++)
+      {modulo=sqrt(normales_vertices[i].x*normales_vertices[i].x+
+                   normales_vertices[i].y*normales_vertices[i].y+
+                   normales_vertices[i].z*normales_vertices[i].z);
+       normales_vertices[i].x/=modulo;
+       normales_vertices[i].y/=modulo;
+       normales_vertices[i].z/=modulo;            
+      }
+}
+
+
+//*************************************************************************
 // asignación colores
 //*************************************************************************
 
@@ -167,72 +227,39 @@ for (i=0;i<n_c;i++)
   }
 }
 
-void _triangulos3D::asignar_gama_rojos(){
-	float start = 1.0;
-	for(int i = 0; i < colores_caras.size(); i++){
-		colores_caras[i].r = start; 
-		colores_caras[i].g = 0.0;
-		colores_caras[i].b = 0.0;
-		start-=1.0/colores_caras.size();
-	}
+//*************************************************************************
+
+void _triangulos3D::colors_diffuse_flat (float kr, float kg, float kb,
+                             float lpx, float lpy, float lpz)
+{
+int i, n_c;
+float modulo, escalar;
+_vertex3f l;
+
+n_c=caras.size();
+colores_caras.resize(n_c);
+for (i=0;i<n_c;i++)
+  {
+   l.x=lpx-vertices[caras[i]._0].x;
+   l.y=lpy-vertices[caras[i]._0].y;
+   l.z=lpz-vertices[caras[i]._0].z;
+   modulo=sqrt(l.x*l.x+l.y*l.y+l.z*l.z);
+   l.x/=modulo;
+   l.y/=modulo;
+   l.z/=modulo;
+   
+   escalar=l.x*normales_caras[i].x+l.y*normales_caras[i].y+l.z*normales_caras[i].z;
+   if (escalar>0.0)
+     {colores_caras[i].r=kr*escalar;
+      colores_caras[i].g=kg*escalar;
+      colores_caras[i].b=kb*escalar;
+     }
+   else {colores_caras[i].r=0.0;
+        colores_caras[i].g=0.0;
+        colores_caras[i].b=0.0;
+        }
+  }
 }
-
-void _triangulos3D::asignar_gama_verdes(){
-    float start = 1.0;
-    for(int i = 0; i < colores_caras.size(); i++){
-        colores_caras[i].r = 0.0; 
-        colores_caras[i].g = start; 
-        colores_caras[i].b = 0.0; 
-        start -= 1.0 / colores_caras.size();
-    }
-}
-
-
-void _triangulos3D::asignar_gama_amarillos(){
-    float start = 1.0;
-	for(int i = 0; i < colores_caras.size(); i++){
-		colores_caras[i].r = start; 
-		colores_caras[i].g = start; 
-		colores_caras[i].b = 0.0; 
-		start -= 1.0 / colores_caras.size();
-	}
-}
-
-void _triangulos3D::asignar_randomColor(){
-	for(int i = 0; i < caras.size(); i++){
-		colores_caras[i].r = (rand() % 1000) / 1000.0;
-		colores_caras[i].g = (rand() % 1000) / 1000.0;
-		colores_caras[i].b = (rand() % 1000) / 1000.0;
-	}
-}
-
-void _triangulos3D::asigna_colores_default(int numCaras){
-	vector<_vertex3f> colores_predeterminados;
-	colores_predeterminados.resize(12);
-	colores_predeterminados[0].x = 1.0; colores_predeterminados[0].y = 0.0; colores_predeterminados[0].z = 0.0; // Rojo
-    colores_predeterminados[1].x = 0.0; colores_predeterminados[1].y = 1.0; colores_predeterminados[1].z = 0.0; // Verde
-    colores_predeterminados[2].x = 0.0; colores_predeterminados[2].y = 0.0; colores_predeterminados[2].z = 1.0; // Azul
-    colores_predeterminados[3].x = 1.0; colores_predeterminados[3].y = 1.0; colores_predeterminados[3].z = 0.0; // Amarillo
-    colores_predeterminados[4].x = 1.0; colores_predeterminados[4].y = 0.0; colores_predeterminados[4].z = 1.0; // Magenta
-    colores_predeterminados[5].x = 0.0; colores_predeterminados[5].y = 1.0; colores_predeterminados[5].z = 1.0; // Cian
-    colores_predeterminados[6].x = 0.5; colores_predeterminados[6].y = 0.5; colores_predeterminados[6].z = 0.0; // Amarillo oscuro
-    colores_predeterminados[7].x = 0.0; colores_predeterminados[7].y = 0.5; colores_predeterminados[7].z = 0.5; // Verde azulado
-    colores_predeterminados[8].x = 0.5; colores_predeterminados[8].y = 0.0; colores_predeterminados[8].z = 0.5; // Morado
-    colores_predeterminados[9].x = 0.5; colores_predeterminados[9].y = 0.5; colores_predeterminados[9].z = 0.5; // Gris
-    colores_predeterminados[10].x = 0.0; colores_predeterminados[10].y = 0.0; colores_predeterminados[10].z = 0.5; // Azul oscuro
-    colores_predeterminados[11].x = 0.0; colores_predeterminados[11].y = 0.0; colores_predeterminados[11].z = 0.3; // Azul oscuro (variación)
-
-	auto it = colores_predeterminados.begin();
-	int numAsignaciones = 0;
-	while(it != colores_predeterminados.end() && numAsignaciones < numCaras){
-		colores_caras[numAsignaciones].r = (*it).x;
-		colores_caras[numAsignaciones].g = (*it).y;
-		colores_caras[numAsignaciones].b = (*it).z;
-		++numAsignaciones;
-		++it;
-	}
-}
-
 
 //*************************************************************************
 // objetos o modelos
@@ -270,8 +297,12 @@ caras[9]._0=2;caras[9]._1=6;caras[9]._2=7;
 caras[10]._0=0;caras[10]._1=1;caras[10]._2=4;
 caras[11]._0=1;caras[11]._1=5;caras[11]._2=4; 
 
+// normales
+calcular_normales_caras();
+
 //colores de las caras
 colors_random();
+
 }
 
 
@@ -298,59 +329,12 @@ caras[3]._0=3;caras[3]._1=0;caras[3]._2=4;
 caras[4]._0=3;caras[4]._1=1;caras[4]._2=0;
 caras[5]._0=3;caras[5]._1=2;caras[5]._2=1;
 
+// normales
+calcular_normales_caras();
+
 //colores de las caras
 colors_random();
-}
 
-_tronco_piramide::_tronco_piramide(float tam1, float tam2, float alt){
-	
-  //vertices 
-	vertices.resize(8); 
-	vertices[0].x=-tam1;vertices[0].y=0;vertices[0].z=tam1;
-	vertices[1].x=tam1;vertices[1].y=0;vertices[1].z=tam1;
-	vertices[2].x=tam1;vertices[2].y=0;vertices[2].z=-tam1;
-	vertices[3].x=-tam1;vertices[3].y=0;vertices[3].z=-tam1;
-	vertices[4].x=-tam2;vertices[4].y=alt;vertices[4].z=tam2;
-	vertices[5].x=tam2;vertices[5].y=alt;vertices[5].z=tam2;
-	vertices[6].x=tam2;vertices[6].y=alt;vertices[6].z=-tam2;
-	vertices[7].x=-tam2;vertices[7].y=alt;vertices[7].z=-tam2;
-
-	// triangulos
-	caras.resize(12);
-	//cara baja
-	caras[0]._0=3;caras[0]._1=1;caras[0]._2=0;
-	caras[1]._0=3;caras[1]._1=2;caras[1]._2=1;
-
-	//cara arriba
-	caras[2]._0=4;caras[2]._1=5;caras[2]._2=6;
-	caras[3]._0=4;caras[3]._1=6;caras[3]._2=7;
-
-	//cara izquierda
-	caras[4]._0=3;caras[4]._1=0;caras[4]._2=7;
-	caras[5]._0=0;caras[5]._1=4;caras[5]._2=7;
-
-	//cara delante
-	caras[6]._0=0;caras[6]._1=1;caras[6]._2=4;
-	caras[7]._0=1;caras[7]._1=5;caras[7]._2=4;
-
-	//cara derecha
-	caras[8]._0=1;caras[8]._1=2;caras[8]._2=5;
-	caras[9]._0=2;caras[9]._1=6;caras[9]._2=5;
-
-	//cara trasera
-	caras[10]._0=2;caras[10]._1=3;caras[10]._2=6;
-	caras[11]._0=3;caras[11]._1=6;caras[11]._2=7;
-
-	colores_caras.resize(12);
-  asignar_gama_metalicos();
-
-	
-	// int numColores = caras.size();
-	// asigna_colores_default(numColores);
-	//asignar_gama_amarillos();
-	//asignar_gama_verdes();
-	//asignar_randomColor();
-	//asignar_gama_rojos();
 }
 
 //*************************************************************************
@@ -397,8 +381,13 @@ for (i=0;i<n_car;i++)
    caras[i].z=car_ply[3*i+2];
   }
 
+// normales
+calcular_normales_caras();
+
 // colores
-colors_random();
+//colors_random();
+colors_diffuse_flat(0.8,0.9,0.2,   20,20,20);
+
 }
 
 
@@ -502,6 +491,9 @@ if (tapa_su==1)
     }
 }
 
+// normales
+calcular_normales_caras();
+
 //colores de las caras
 colors_random();
 }
@@ -545,6 +537,9 @@ for (i=0;i<num_aux;i++)
    caras[c]._2=i*2+1;    
    c=c+1;    
    }  
+   
+// normales
+calcular_normales_caras();   
    
 //colores de las caras
 colors_random();
@@ -615,32 +610,7 @@ _rotacion_PLY::_rotacion_PLY()
 
 void _rotacion_PLY::parametros_PLY(char *archivo, int num)
 {
-	int n_ver,n_car,i;
-	vector<_vertex3f> perfil;
-	_vertex3f aux;
 
-	vector<float> ver_ply ;
-	vector<int>   car_ply ;
-	
-	_file_ply::read(archivo, ver_ply, car_ply );
-
-	n_ver=ver_ply.size()/3;
-	
-
-	printf("Number of vertices=%d", n_ver);
-
-	vertices.resize(n_ver);
-
-	//vertices
-	 for(i=0;i<n_ver;i++)
-	 {
-		 aux.x=ver_ply[i*3];
-		 aux.y=ver_ply[i*3+1];
-		 aux.z=ver_ply[i*3+2];
-		 perfil.push_back(aux);
-	 }
-
-	parametros(perfil, num, 1, 1, 1);
 }
 
 
@@ -741,8 +711,13 @@ for (j=0;j<num-1;j++)
      caras[c]._2=i+(j+1)*num;
      c=c+1;
     }
+
+// normales
+calcular_normales_caras();
+
 //colores de las caras
 colors_chess(0.2,1.0,0.2,0.3,0.8,0.1);
+
 }
 
 //************************************************************************
@@ -950,372 +925,3 @@ pala.draw(modo, r, g, b, grosor);
 glPopMatrix();
 };
 
-/***********************************************************************************************/
-//Práctica 3 Versión del alumno: objeto jerárquico articulado ALA-X (Star Wars)
-/***********************************************************************************************/
-
-void _triangulos3D::colors_metallic(MetallicType metallicType)
-    {
-        int i, n_c;
-        n_c = caras.size();
-        colores_caras.resize(n_c);
-
-        for (i = 0; i < n_c; i++)
-        {
-            switch (metallicType)
-            {
-            case GOLD:
-                colores_caras[i].r = 255 / 255.0f;
-                colores_caras[i].g = 215 / 255.0f;
-                colores_caras[i].b = 0 / 255.0f;
-                break;
-            case SILVER:
-                colores_caras[i].r = 192 / 255.0f;
-                colores_caras[i].g = 192 / 255.0f;
-                colores_caras[i].b = 192 / 255.0f;
-                break;
-            case BRONZE:
-                colores_caras[i].r = 205 / 255.0f;
-                colores_caras[i].g = 127 / 255.0f;
-                colores_caras[i].b = 50 / 255.0f;
-                break;
-            default:
-                break;
-            }
-        }
-    }
-
-void _triangulos3D::asignar_gama_metalicos(){
-    float start = 1.0;
-    float paso = 1.0 / colores_caras.size();
-
-    for (int i = 0; i < colores_caras.size(); i++) {
-        // Asignar el mismo valor a las componentes roja, verde y azul para obtener un tono de gris
-        colores_caras[i].r = start;
-        colores_caras[i].g = start;
-        colores_caras[i].b = start;
-
-        // Asegurar que el valor nunca sea menor que 0.0
-        start = std::max(start - paso, 0.0f);
-    }
-}
-
-//clase motor
-_motor::_motor()
-{
-  radio = 0.24;
-  altura = 0.55;
-  num = 0.2;
-  cilindro.asignar_gama_metalicos();
-};
-
-void _motor::draw(_modo modo, float r, float g, float b, float grosor)
-{
-    glPushMatrix();
-    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-    //glTranslatef(0, 0, 0);
-    glScalef(radio, altura, num);
-    cilindro.draw(modo, r, g, b, grosor);
-    glPopMatrix();
-};
-
-//clase cañon
-_canion::_canion()
-{
-
-  radio = 0.24;
-  altura = 0.55;
-  num = 0.2;
-  cilindro.asignar_gama_metalicos();
-
-  radioMisil = 0.1;
-  alturaMisil = 1.3;
-  numMisil = 0.1;
-  cilindroMisil.asignar_gama_metalicos();
-
-};
-
-void _canion::draw(_modo modo, float r, float g, float b, float grosor)
-{
-    glPushMatrix();
-      glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-      // glTranslatef(0, 0, altura/2);
-      glScalef(radio, altura, num);
-      cilindro.draw(modo, r, g, b, grosor);
-    glPopMatrix();
-
-    glPushMatrix();
-      glTranslatef(0, 0, alturaMisil-disparo);
-      glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-      glScalef(radioMisil, alturaMisil, numMisil);
-      cilindroMisil.draw(modo, r, g, b, grosor);
-    glPopMatrix();
-};
-
-//clase ala
-_ala::_ala()
-{
-  ancho=2.0;
-  alto=0.1;
-  fondo=1.05;
-  
-  cubo.asignar_gama_metalicos();
-};
-
-void _ala::draw(_modo modo, float r, float g, float b, float grosor)
-{
-    glPushMatrix();
-      glTranslatef(-fondo, 0, fondo/2);
-      glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
-      glScalef(ancho, alto, fondo);
-      //glTranslatef(0.5,0,0);
-      cubo.draw(modo, r, g, b, grosor);
-    glPopMatrix();
-
-    //ponemos motor
-    glPushMatrix();
-      glTranslatef(0, 0, fondo/2);
-      motor.draw(modo, r, g, b, grosor);
-    glPopMatrix();
-
-    //ponemos cañon
-    glPushMatrix();
-      glTranslatef(-2*fondo, 0, fondo/2);
-      canion.draw(modo, r, g, b, grosor);
-    glPopMatrix();
-
-};
-
-//clase puerta
-_puerta::_puerta()
-{
-  tronco.asignar_gama_metalicos();
-};
-
-
-void _puerta::draw(_modo modo, float r, float g, float b, float grosor)
-{
-    glPushMatrix();
-    glTranslatef(0.0f, 0.0f, 0.5f);
-      glScalef(1.0, 0.15, 1.0);
-      tronco.draw(modo, r, g, b, grosor);
-    glPopMatrix();
-};
-
-//clase para la cabina
- _cabinaX::_cabinaX()
- {
-   cubo.asignar_gama_metalicos();
-   tronco.asignar_gama_metalicos();
- };
- 
- 
-void _cabinaX::draw(_modo modo, float r, float g, float b, float grosor)
-{
-   glPushMatrix();
-     glScalef(1.0, 0.7, 1.0);
-     cubo.draw(modo, r, g, b, grosor);
-   glPopMatrix();
-
-  glPushMatrix();
-    glScalef(1.0, 0.7, 2.5);
-    glTranslatef(0,0,0.2);
-    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-    tronco.draw(modo, r, g, b, grosor);
-  glPopMatrix();
-
-};
-
-//CLASE PARA LA PUNTA  
-
-_punta::_punta()
-{
-  punta.asignar_gama_metalicos();
-};
-
-void _punta::draw(_modo modo, float r, float g, float b, float grosor)
-{
-  glPushMatrix();
-    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-    glScalef(0.5, 0.5, 0.5);
-    punta.draw(modo, r, g, b, grosor);
-  glPopMatrix();
-};
-
-
-//**********************
-//Montaje de modelo final
-//***********************
-
-_alaX::_alaX()
-{
-
-};
-
-void _alaX::draw(_modo modo, float r, float g, float b, float grosor)
-{
-
-//montaje de la cabina
-glPushMatrix();
-  cabinaX.draw(modo, r, g, b, grosor);
-glPopMatrix();
-
-//montaje de la puerta
-glPushMatrix();
-  //glRotatef(3.0f, 1.0f, 0.0f, 0.0f);
-  glTranslatef(0.0, 0.32, 0.9);
-  glScalef(0.6, 0.6, 0.7);
-  glRotatef(giroPuerta, 1.0f, 0.0f, 0.0f);
-  puerta.draw(modo, r, g, b, grosor);
-glPopMatrix();
-
-//montaje de la punta
-
-glPushMatrix();
-  glRotatef(giroPunta, 0.0f, 0.0f, 1.0f);
-  glTranslatef(0, 0, 2.5);
-  punta.draw(modo, r, g, b, grosor);
-glPopMatrix();
-
-//montaje de las 4 alas
-
-//alaIzdaSup
-glPushMatrix();
-  glRotatef(-giroAla, 0.0f, 0.0f, 1.0f);
-  glTranslatef(-0.7, 0.2, -0.5);
-  //glRotatef(-15.0f, 0.0f, 0.0f, 1.0f); /*combate*/
-  ala1.draw(modo, r, g, b, grosor);
-glPopMatrix();
-
-//alaDchaSup
-glPushMatrix();
-  glRotatef(giroAla, 0.0f, 0.0f, 1.0f);
-  glTranslatef(0.7, 0.2, -0.5);
-  glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
-  //glRotatef(195.0f, 0.0f, 0.0f, 1.0f); /*combate*/
-  ala2.draw(modo, r, g, b, grosor);
-glPopMatrix();
-
-
-//alaIzdaInf
-glPushMatrix();
-glRotatef(giroAla, 0.0f, 0.0f, 1.0f);
-  glTranslatef(-0.7, -0.2, -0.5);
-  //glRotatef(15.0f, 0.0f, 0.0f, 1.0f); /*combate*/
-  ala3.draw(modo, r, g, b, grosor);
-glPopMatrix();
-
-//alaDchaInf
-glPushMatrix();
-  glRotatef(-giroAla, 0.0f, 0.0f, 1.0f);
-  glTranslatef(0.7, -0.2, -0.5);
-  glRotatef(-180.0f, 0.0f, 0.0f, 1.0f);
-  //glRotatef(-195.0f, 0.0f, 0.0f, 1.0f); /*combate*/
-  ala4.draw(modo, r, g, b, grosor);
-glPopMatrix();
-
-
-};
-
-
-_examenEsfera::_examenEsfera(float radio, int latitud, int longitud)
-{
-  vector<_vertex3f> perfil;
-  _vertex3f aux;
-  int i;
-  for (i=1;i<latitud/2;i++)
-    {
-    aux.x=0.6*cos(M_PI*i/(latitud*1.0)-M_PI/2.0);
-    aux.y=0.6*sin(M_PI*i/(latitud*1.0)-M_PI/2.0);
-    aux.z=0.0;
-    perfil.push_back(aux);
-  }
-
-   for(i=1; i<latitud/2;++i){
-     aux.x=0.4*cos(M_PI*i/(latitud*1.0)-M_PI/2.0) + 0.5;
-     aux.y=0.4*sin(M_PI*i/(latitud*1.0)-M_PI/2.0) + 0.5;
-     aux.z=0.0;
-     perfil.push_back(aux);
-   }
-  parametros(perfil,longitud,1,0,1);
-}
-
-
-_examenEsfera2::_examenEsfera2(float radio, int latitud, int longitud)
-{
-  vector<_vertex3f> perfil;
-  _vertex3f aux;
-  int i;
-  for (i=1;i<latitud/2;i++)
-    {
-    aux.x=0.5*cos(M_PI*i/(latitud*1.0)-M_PI/2.0) + 0.3;
-    aux.y=0.5*sin(M_PI*i/(latitud*1.0)-M_PI/2.0);
-    aux.z=0.0;
-    perfil.push_back(aux);
-  }
-
-
-
-    aux.x=0.5;
-    aux.y=0.0;
-    aux.z=0.0;
-    perfil.push_back(aux);
-
-    aux.x=0.5;
-    aux.y=0.5;
-    aux.z=0.0;
-    perfil.push_back(aux);
-
-
-  parametros(perfil,longitud,1,0,1);
-}
-
-
-_examentTroncoFusionPiramide::_examentTroncoFusionPiramide(float t1, float t2, float alt1, float alt2){
-
-  vertices.resize(9);
-  vertices[0].x = -t1; vertices[0].y = 0.0; vertices[0].z = t1;
-  vertices[1].x = t1; vertices[1].y = 0.0; vertices[1].z = t1;
-  vertices[2].x = t1; vertices[2].y = 0.0; vertices[2].z = -t1;
-  vertices[3].x = -t1; vertices[3].y = 0.0; vertices[3].z = -t1;
-  vertices[4].x = -t2; vertices[4].y = alt1; vertices[4].z = t2;
-  vertices[5].x = t2; vertices[5].y = alt1; vertices[5].z = t2;
-  vertices[6].x = t2; vertices[6].y = alt1; vertices[6].z = -t2;
-  vertices[7].x = -t2; vertices[7].y = alt1; vertices[7].z = -t2;
-  vertices[8].x = 0.0; vertices[8].y = alt1+alt2; vertices[8].z = 0.0;
-
-
-  caras.resize(14);
-  //baja
-  caras[0]._0 = 0; caras[0]._1 = 1; caras[0]._2 = 2;
-  caras[1]._0 = 0; caras[1]._1 = 2; caras[1]._2 = 3;
-
-  //fontal
-  caras[2]._0 = 0; caras[2]._1 = 1; caras[2]._2 = 5;
-  caras[3]._0 = 0; caras[3]._1 = 5; caras[3]._2 = 4;
-
-  //trasera
-  caras[4]._0 = 3; caras[4]._1 = 2; caras[4]._2 = 6;
-  caras[5]._0 = 3; caras[5]._1 = 6; caras[5]._2 = 7;
-
-  //derecha
-  caras[6]._0 = 1; caras[6]._1 = 2; caras[6]._2 = 6;
-  caras[7]._0 = 1; caras[7]._1 = 6; caras[7]._2 = 5;
-
-  //izquierda
-  caras[8]._0 = 3; caras[8]._1 = 0; caras[8]._2 = 7;
-  caras[9]._0 = 0; caras[9]._1 = 4; caras[9]._2 = 7;
-
-  //frontal arriba
-  caras[10]._0 = 4; caras[10]._1 = 5; caras[10]._2 = 8;
-  
-  //derecha arriba
-  caras[11]._0 = 5; caras[11]._1 = 6; caras[11]._2 = 8;
-
-  //atras arriba
-  caras[12]._0 = 6; caras[12]._1 = 7; caras[12]._2 = 8;
-
-  //izwuiwrda arriba
-  caras[13]._0 = 7; caras[13]._1 = 4; caras[13]._2 = 8;
-
-}
