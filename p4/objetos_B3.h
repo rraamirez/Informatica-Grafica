@@ -49,6 +49,14 @@ void    colors_diffuse_flat (float kr, float kg, float kb,
                              
 void    colors_diffuse_gouraud  (float kr, float kg, float kb,
                                  float lpx, float lpy, float lpz);                            
+
+void asignar_gama_amarillos();
+void asignar_gama_verdes();
+void asignar_gama_rojos();
+void asignar_randomColor();
+void asigna_colores_default(int numCaras); 
+void asignar_gama_metalicos();
+
 /* calcular normales */
 
 void    calcular_normales_caras();
@@ -86,6 +94,13 @@ class _piramide: public _triangulos3D
 public:
 
 	_piramide(float tam=0.5, float al=1.0);
+};
+
+class _tronco_piramide: public _triangulos3D
+{
+public:
+       _tronco_piramide(float tam1=0.5, float tam2=0.2, float al=0.8);
+	//_tronco_piramide(float tam1, float tam2, float al);
 };
 
 //*************************************************************************
@@ -300,4 +315,132 @@ _pala pala;
 _brazo brazo;
 _cabina cabina;
 _sustentacion sustentacion;
+};
+
+
+/***********************************************************************************************/
+//Práctica 3 Versión del alumno: objeto jerárquico articulado ALA-X (Star Wars)
+/***********************************************************************************************/
+
+
+
+
+
+class _motor: public _triangulos3D
+{
+public:
+       _motor();
+       void draw(_modo modo, float r, float g, float b, float grosor);
+
+       float radio, altura, num;
+
+protected:
+_cilindro cilindro;
+};
+
+class _canion: public _triangulos3D
+{
+public:
+       _canion();
+       void draw(_modo modo, float r, float g, float b, float grosor);
+
+       float radio, altura, num;
+       float radioMisil, alturaMisil, numMisil; 
+                     /*disparo*/
+       float disparo= 0.0f;
+       float max = 10.0f;
+       float min = 0.0f;
+
+_cilindro cilindro;
+_cilindro cilindroMisil;
+};
+
+class _ala: public _triangulos3D
+{      
+public:
+       _ala();
+       void  draw(_modo modo, float r, float g, float b, float grosor);
+
+       float ancho, alto, fondo;
+
+
+_cubo cubo;
+_canion canion;
+_motor motor;
+};
+
+class _puerta: public _triangulos3D
+{
+public:
+       _puerta();
+       void  draw(_modo modo, float r, float g, float b, float grosor);
+       
+       float tam1= 0.85;    float tam2= 0.65;       float alt= 0.15;
+
+protected: 
+_tronco_piramide tronco;
+
+};
+ class _cabinaX: public _triangulos3D
+ {
+ public:
+        _cabinaX();
+        void  draw(_modo modo, float r, float g, float b, float grosor);
+        float anchoCubo = 0.85;
+        float altoCubo = 1.0;
+ protected:
+ _cubo cubo;
+ _tronco_piramide tronco; 
+
+ };
+
+class _punta: public _triangulos3D
+ {
+public: 
+       _punta();
+       void  draw(_modo modo, float r, float g, float b, float grosor);
+       
+protected: 
+_piramide punta;
+
+ };
+ 
+ 
+class _alaX: public _triangulos3D
+{
+public:
+       _alaX();
+       void  draw(_modo modo, float r, float g, float b, float grosor);
+
+       /*atributos de movimiento*/
+       float giroPuerta = 12.0f;
+       float giroPuertamin = 12.0f;
+       float giroPuertamax = -20.0f;
+
+       /*giros*/
+       float giroAla= 0.0f;
+       float giroAlamin = 0.0f;
+       float giroAlamax = 20.0f;
+
+       /*giro punta*/
+       float giroPunta = 1.0f;
+       float giroPuntaMax = 360.0f;
+
+
+      
+
+       _punta punta;
+       _puerta puerta;
+       _cabinaX cabinaX;
+
+       /*
+       Ala 1 es el ala superior izquierda (mirando de frente)
+       Ala 2 es el ala superior derecha (mirando de frente)
+       Ala 3 es el ala inferior izquierda (mirando de frente)
+       Ala 4 es el ala inferior derecha (mirando de frente)
+       */
+       _ala ala1;
+       _ala ala2;
+       _ala ala3;
+       _ala ala4;
 };

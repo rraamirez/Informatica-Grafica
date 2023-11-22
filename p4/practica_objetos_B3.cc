@@ -12,8 +12,8 @@
 using namespace std;
 
 // tipos
-typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, CILINDRO, CONO, ESFERA, EXTRUSION,
-             MONTANA, EXCAVADORA} _tipo_objeto;
+typedef enum{CUBO, PIRAMIDE, TRONCO_PIRAMIDE, OBJETO_PLY, ROTACION, ROTACION_PLY, CILINDRO, CONO, ESFERA, EXTRUSION,
+             MONTANA, EXCAVADORA, /*pruebas*/MOTOR, ALA, CANION, PUERTA, CABINA, PUNTA, /*MODELO FINAL*/ ALAX} _tipo_objeto;
 _tipo_objeto t_objeto=CUBO;
 _modo   modo=POINTS;
 
@@ -34,6 +34,7 @@ _cubo cubo;
 _piramide piramide(0.85,1.3);
 _objeto_ply  ply; 
 _rotacion rotacion;
+_rotacion_PLY rotacion_PLY;
 _cilindro cilindro(1,2,6); 
 _cono cono(1,2,6);
 _esfera esfera(1,6,6);
@@ -46,6 +47,23 @@ _montana montana(6,0.9, 0.8);
 float giro1=0.0, giro2=0.0, giro3=0.0;
 int pulsar=0.0;
 int paso=0;
+
+/**Implementacion de pruebas*/
+_motor motor;
+_ala ala;
+_canion canion;
+_puerta puerta;
+_cabinaX cabina;
+_punta punta;
+_alaX alaX;
+
+//movimientos
+float giro_puerta=0.0;
+float giro_alas=0.0;
+float giro_canion=0.0;
+float giro_punta=0.0;
+int paso_alax=0;
+int pulsar_alax=0;
 
 
 //**************************************************************************
@@ -133,6 +151,15 @@ switch (t_objeto){
         case EXCAVADORA: excavadora.draw(modo,1.0,0.0,0.0,5);break;
         case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
         case MONTANA: montana.draw(modo,0.2,0.7,0.0,1);break;
+        //IMPLEMENTACION DE PRUEBAS
+        case MOTOR: motor.draw(modo,1.0,0.0,0.0,5);break;
+        case ALA: ala.draw(modo,1.0,0.0,0.0,5);break;
+        case CANION: canion.draw(modo,1.0,0.0,0.0,5);break;
+        case PUERTA: puerta.draw(modo,1.0,0.0,0.0,5);break;
+        case CABINA: cabina.draw(modo,1.0,0.0,0.0,5);break;
+        case PUNTA: punta.draw(modo,1.0,0.0,0.0,5);break;
+        //implementacion final ala-x
+        case ALAX: alaX.draw(modo,1.0,0.0,0.0,5);break;
 	}
 
 }
@@ -189,6 +216,11 @@ switch (toupper(Tecla1)){
 	case '2':modo=EDGES;break;
 	case '3':modo=SOLID;break;
 	case '4':modo=SOLID_COLORS;break;
+    //5 iluminacion plana
+    // 6 gouraud
+    // 7 textura
+    // I segunda luz
+    // O y P rotacion positova y negativa de segunda luz
         case 'P':t_objeto=PIRAMIDE;break;
         case 'C':t_objeto=CUBO;break;
         case 'O':t_objeto=OBJETO_PLY;break;	
@@ -196,22 +228,24 @@ switch (toupper(Tecla1)){
         case 'L':t_objeto=CILINDRO;break;
         case 'N':t_objeto=CONO;break;
         case 'E':t_objeto=ESFERA;break;
-        case 'A':t_objeto=EXCAVADORA;break;
         case 'X':t_objeto=EXTRUSION;break;
         case 'M':t_objeto=MONTANA;break;
-        /*case 'S':if (pulsar==0)
-                    {giro1=1.0;
-                     giro2=1.0;
-                     giro3=0.25;
-                     pulsar=1;
+        case 'A':t_objeto=ALAX;break;
+        case 'S':if (pulsar_alax==0)
+                    {giro_puerta=0.5;
+                     giro_punta=1.0;
+                     giro_alas=0.5;
+                     giro_canion=0.01;
+                     pulsar_alax=1;
                      }
                  else
-                    {giro1=0.0;
-                     giro2=0.0;
-                     giro3=0.0;
-                     pulsar=0;
+                    {giro_puerta=0.0;
+                     giro_punta=0.0;
+                     giro_alas=0.0;
+                     giro_canion=0.0;
+                     pulsar_alax=0;
                      }    
-                 break;*/
+                 break;
 	}
 glutPostRedisplay();
 }
@@ -237,26 +271,42 @@ switch (Tecla1){
    case GLUT_KEY_PAGE_UP:Observer_distance*=1.2;break;
    case GLUT_KEY_PAGE_DOWN:Observer_distance/=1.2;break;
 	
-   case GLUT_KEY_F1:excavadora.giro_cabina+=5;break;
-   case GLUT_KEY_F2:excavadora.giro_cabina-=5;break;
-   case GLUT_KEY_F3:excavadora.giro_primer_brazo+=1;
-        if (excavadora.giro_primer_brazo > excavadora.giro_primer_brazo_max)
-            excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_max;break;
-   case GLUT_KEY_F4:excavadora.giro_primer_brazo-=1;
-        if (excavadora.giro_primer_brazo < excavadora.giro_primer_brazo_min)
-            excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_min;break;
-   case GLUT_KEY_F5:excavadora.giro_segundo_brazo+=1;
-        if (excavadora.giro_segundo_brazo > excavadora.giro_segundo_brazo_max)
-            excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_max;break;
-   case GLUT_KEY_F6:excavadora.giro_segundo_brazo-=1;
-        if (excavadora.giro_segundo_brazo < excavadora.giro_segundo_brazo_min) 
-            excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_min;break;
-   case GLUT_KEY_F7:excavadora.giro_pala+=1;
-        if (excavadora.giro_pala > excavadora.giro_pala_max)
-            excavadora.giro_pala = excavadora.giro_pala_max;break;
-   case GLUT_KEY_F8:excavadora.giro_pala-=1;
-        if (excavadora.giro_pala < excavadora.giro_pala_min)
-            excavadora.giro_pala = excavadora.giro_pala_min;break;
+   case GLUT_KEY_F1:if(alaX.giroPuerta > alaX.giroPuertamax)alaX.giroPuerta-=5;break;
+   case GLUT_KEY_F2:if(alaX.giroPuerta < alaX.giroPuertamin)alaX.giroPuerta+=5;
+   case GLUT_KEY_F3:if(alaX.giroPunta < alaX.giroPuntaMax )alaX.giroPunta+=10; break;
+   case GLUT_KEY_F4:
+        if(alaX.giroAla < alaX.giroAlamax)alaX.giroAla+=5;
+            break;
+   case GLUT_KEY_F5:
+    if(alaX.ala1.canion.disparo > 0.5){
+            alaX.ala1.canion.disparo = 0.0;
+            alaX.ala2.canion.disparo = 0.0;
+            alaX.ala3.canion.disparo = 0.0;
+            alaX.ala4.canion.disparo = 0.0;
+            break;
+        }
+
+        alaX.ala1.canion.disparo+=0.1;
+        alaX.ala2.canion.disparo+=0.1;
+        alaX.ala3.canion.disparo+=0.1;
+        alaX.ala4.canion.disparo+=0.1;
+        break;
+
+   case GLUT_KEY_F6:
+        if(alaX.ala1.canion.disparo  < -0.5){
+        alaX.ala1.canion.disparo = 0.0;
+        alaX.ala2.canion.disparo = 0.0;
+        alaX.ala3.canion.disparo = 0.0;
+        alaX.ala4.canion.disparo = 0.0;
+        break;
+    }
+
+
+        alaX.ala1.canion.disparo-=0.1;
+        alaX.ala2.canion.disparo-=0.1;
+        alaX.ala3.canion.disparo-=0.1;
+        alaX.ala4.canion.disparo-=0.1;
+        break;
 	}
 glutPostRedisplay();
 }
@@ -321,6 +371,61 @@ glutPostRedisplay();
 }
 
 
+void animacion2()
+{
+int iters=0;
+switch (paso_alax){
+    case 0/*abrepuerta*/:alaX.giroPuerta-=giro_puerta;
+            if (alaX.giroPuerta < alaX.giroPuertamax) paso_alax=1; break;
+    case 1/*cierraPuerta*/:alaX.giroPuerta+=giro_puerta;
+            if (alaX.giroPuerta > alaX.giroPuertamin) paso_alax=2; break;
+    case 2/*giraPunta*/: 
+            if(alaX.giroPunta < alaX.giroPuntaMax )alaX.giroPunta+=10;
+            else paso_alax=3;
+            break;
+    case 3:
+            if(alaX.giroAla < alaX.giroAlamax)alaX.giroAla+=giro_alas;
+            else paso_alax=4;
+
+            break;
+    case 4:
+        if(alaX.ala1.canion.disparo < 0.5){
+            alaX.ala1.canion.disparo+=giro_canion;
+            alaX.ala2.canion.disparo+=giro_canion;
+            alaX.ala3.canion.disparo+=giro_canion;
+            alaX.ala4.canion.disparo+=giro_canion;
+        }
+        else{
+            alaX.ala1.canion.disparo = 0.0;
+            alaX.ala2.canion.disparo = 0.0;
+            alaX.ala3.canion.disparo = 0.0;
+            alaX.ala4.canion.disparo = 0.0;
+            paso_alax=5;
+        }
+        break;
+    case 5:
+       if(alaX.ala1.canion.disparo >  -0.5){
+            alaX.ala1.canion.disparo-=giro_canion;
+            alaX.ala2.canion.disparo-=giro_canion;
+            alaX.ala3.canion.disparo-=giro_canion;
+            alaX.ala4.canion.disparo-=giro_canion;
+        }
+        else{
+            alaX.giroPunta = 0;
+            alaX.giroAla = 0;
+            alaX.ala1.canion.disparo=0;
+            alaX.ala2.canion.disparo=0;
+            alaX.ala3.canion.disparo=0;
+            alaX.ala4.canion.disparo=0;
+            paso_alax=0;
+        }
+        break;
+
+}
+glutPostRedisplay();
+}
+
+
 //***************************************************************************
 // Funcion de incializacion
 //***************************************************************************
@@ -376,6 +481,8 @@ perfil.push_back(aux);
 
 
 rotacion.parametros(perfil,6,1,1,0);
+rotacion_PLY.parametros_PLY("seta",10);
+
 
 aux.x=1.0; aux.y=0.0; aux.z=1.0;
 poligono.push_back(aux);
@@ -412,7 +519,7 @@ glutInitWindowSize(Window_width,Window_high);
 
 // llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
 // al bucle de eventos)
-glutCreateWindow("PRACTICA - 3");
+glutCreateWindow("PRACTICA - 4 - Raul Ramirez");
 
 // asignación de la funcion llamada "dibujar" al evento de dibujo
 glutDisplayFunc(draw);
@@ -433,6 +540,8 @@ glutAttachMenu(GLUT_LEFT_BUTTON);
 
 
 glutIdleFunc(animacion);
+glutIdleFunc(animacion2);
+
 
 // funcion de inicialización
 initialize();
