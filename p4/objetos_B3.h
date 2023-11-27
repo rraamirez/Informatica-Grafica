@@ -9,7 +9,7 @@
 
 
 const float AXIS_SIZE=5000;
-typedef enum{POINTS,EDGES,SOLID,SOLID_COLORS} _modo;
+typedef enum{POINTS,EDGES,SOLID,SOLID_COLORS,ILUMINACION_PLANA,ILUMINACION_GOURAUD} _modo;
 
 //*************************************************************************
 // clase punto
@@ -41,6 +41,12 @@ void    draw_solido(float r, float g, float b);
 void 	draw_solido_colores();
 void 	draw(_modo modo, float r, float g, float b, float grosor);
 
+/*p4*/
+/* Permite dibujar objetos con iluminación plana*/
+void  draw_solido_plano();
+/* Permite dibujar objetos con iluminación con suavizado de Gouraud */
+void  draw_solido_suave();
+
 /* asignación de colores */
 void 	colors_random();
 void 	colors_chess(float r1, float g1, float b1, float r2, float g2, float b2);
@@ -67,6 +73,12 @@ vector<_vertex3f> colores_caras;
 vector<_vertex3f> colores_vertices;
 vector<_vertex3f> normales_caras;
 vector<_vertex3f> normales_vertices;
+
+// material
+_vertex4f ambiente;
+_vertex4f difuso;
+_vertex4f especular;
+float brillo;
 };
 
 //*************************************************************************
@@ -444,3 +456,7 @@ public:
        _ala ala3;
        _ala ala4;
 };
+
+
+/*de la p4*/
+

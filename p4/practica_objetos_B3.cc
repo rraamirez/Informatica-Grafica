@@ -70,6 +70,11 @@ int pulsar_alax=0;
 //
 //***************************************************************************
 
+//prototipo de la función luces
+void luces();
+
+
+
 void clean_window()
 {
 
@@ -173,6 +178,7 @@ void draw(void)
 {
 clean_window();
 change_observer();
+luces();
 draw_axis();
 draw_objects();
 glutSwapBuffers();
@@ -216,7 +222,8 @@ switch (toupper(Tecla1)){
 	case '2':modo=EDGES;break;
 	case '3':modo=SOLID;break;
 	case '4':modo=SOLID_COLORS;break;
-    //5 iluminacion plana
+    case '5':modo=ILUMINACION_PLANA;break;
+    case '6':modo=ILUMINACION_GOURAUD;break;
     // 6 gouraud
     // 7 textura
     // I segunda luz
@@ -449,10 +456,38 @@ glClearColor(1,1,1,1);
 
 // se habilita el z-bufer
 glEnable(GL_DEPTH_TEST);
+
 change_projection();
 glViewport(0,0,Window_width,Window_high);
 }
 
+
+void luces(){
+    GLfloat luz_ambiental[]={0.2,0.2,0.2,1.0},
+            luz_difusa[]={0.7,0.7,0.7,1.0},
+            luz_especular[]={0.9,0.9,0.9,1.0},
+            luz_posicion[]={0.0,0.0,0.0,1.0};
+
+    GLfloat luz_ambiental2[]={0.2,0.2,0.2,1.0},
+            luz_difusa2[]={0.7,0.7,0.7,1.0},
+            luz_especular2[]={0.9,0.9,0.9,1.0},
+            luz_posicion2[]={0.0,0.0,0.0,1.0};
+
+    glLightfv(GL_LIGHT1,GL_AMBIENT,luz_ambiental);
+    glLightfv(GL_LIGHT1,GL_DIFFUSE,luz_difusa);
+    glLightfv(GL_LIGHT1,GL_SPECULAR,luz_especular);
+    glLightfv(GL_LIGHT1,GL_POSITION,luz_posicion);
+
+    glLightfv(GL_LIGHT2,GL_AMBIENT,luz_ambiental2);
+    glLightfv(GL_LIGHT2,GL_DIFFUSE,luz_difusa2);
+    glLightfv(GL_LIGHT2,GL_SPECULAR,luz_especular2);
+    glLightfv(GL_LIGHT2,GL_POSITION,luz_posicion2);
+
+    glDisable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+    glEnable(GL_LIGHT2);
+    glEnable(GL_LIGHTING);
+}
 
 //***************************************************************************
 // Programa principal

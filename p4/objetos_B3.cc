@@ -46,6 +46,11 @@ glEnd();*/
 
 _triangulos3D::_triangulos3D()
 {
+ambiente = {0.2f, 0.2f, 0.2f, 1.0f};
+difuso = {0.7f, 0.7f, 0.7f, 1.0f};
+especular = {0.3f, 0.3f, 0.3f, 1.0f};
+brillo = 32.0f;
+
 }
 
 
@@ -126,6 +131,8 @@ switch (modo){
 	case EDGES:draw_aristas(r, g, b, grosor);break;
 	case SOLID:draw_solido(r, g, b);break;
 	case SOLID_COLORS:draw_solido_colores();break;
+  case ILUMINACION_PLANA:draw_solido_plano();break;
+  case ILUMINACION_GOURAUD:draw_solido_suave();break;
 	}
 }
 
@@ -492,7 +499,7 @@ for (i=0;i<n_car;i++)
 
 // normales
 calcular_normales_caras();
-
+calcular_normales_vertices();
 // colores
 //colors_random();
 colors_diffuse_flat(0.8,0.9,0.2,   20,20,20);
@@ -600,8 +607,11 @@ if (tapa_su==1)
     }
 }
 
+//aqui va de video
 // normales
 calcular_normales_caras();
+
+calcular_normales_vertices();
 
 //colores de las caras
 colors_random();
@@ -1294,3 +1304,62 @@ glPopMatrix();
 
 
 };
+
+
+/*p4*/
+
+//*************************************************************************
+// dibujar en modo sólido con iluminación blanca 
+//*************************************************************************
+
+void _triangulos3D::draw_solido_plano( )
+{
+	int i;
+	glEnable(GL_LIGHTING);
+	glMaterialfv(GL_FRONT,GL_AMBIENT, (GLfloat *) &ambiente);
+	glMaterialfv(GL_FRONT,GL_DIFFUSE, (GLfloat *) &difuso);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, (GLfloat *) &especular);
+	glMaterialfv(GL_FRONT, GL_SHININESS, (GLfloat *) &brillo);
+	glEnable(GL_NORMALIZE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBegin(GL_TRIANGLES);
+	for (i=0;i<caras.size();i++){
+		glNormal3f(normales_caras[i].x,normales_caras[i].y,normales_caras[i].z);
+		glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
+		glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
+		glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
+	}
+	glEnd();
+	glDisable(GL_LIGHTING);
+}
+
+
+//*************************************************************************
+// dibujar en modo sólido con el suavizado de Gouraud
+//*************************************************************************
+
+
+//hacen falta las normales de los vértices de nuestros objtetos
+void _triangulos3D::draw_solido_suave( )
+{
+  
+	int i;
+	glEnable(GL_LIGHTING);
+	glMaterialfv(GL_FRONT,GL_AMBIENT, (GLfloat *) &ambiente);
+	glMaterialfv(GL_FRONT,GL_DIFFUSE, (GLfloat *) &difuso);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, (GLfloat *) &especular);
+	glMaterialfv(GL_FRONT, GL_SHININESS, (GLfloat *) &brillo);
+	glEnable(GL_NORMALIZE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBegin(GL_TRIANGLES);
+	for (i=0;i<caras.size();i++){
+		glNormal3f(normales_vertices[caras[i]._0].x,normales_vertices[caras[i]._0].y,normales_vertices[caras[i]._0].z);
+		glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
+		glNormal3f(normales_vertices[caras[i]._1].x,normales_vertices[caras[i]._1].y,normales_vertices[caras[i]._1].z);
+		glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
+		glNormal3f(normales_vertices[caras[i]._2].x,normales_vertices[caras[i]._2].y,normales_vertices[caras[i]._2].z);
+		glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
+	}
+	glEnd();
+	glDisable(GL_LIGHTING);
+}
