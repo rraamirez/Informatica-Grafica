@@ -463,15 +463,15 @@ glViewport(0,0,Window_width,Window_high);
 
 
 void luces(){
-    GLfloat luz_ambiental[]={0.2,0.2,0.2,1.0},
-            luz_difusa[]={0.7,0.7,0.7,1.0},
+    GLfloat luz_ambiental[]={0.05,0.05,0.05,1.0},
+            luz_difusa[]={1.0,1.0,1.0,1.0},
             luz_especular[]={0.9,0.9,0.9,1.0},
-            luz_posicion[]={0.0,0.0,0.0,1.0};
+            luz_posicion[]={0.0,0.0,20.0,1.0};
 
-    GLfloat luz_ambiental2[]={0.2,0.2,0.2,1.0},
-            luz_difusa2[]={0.7,0.7,0.7,1.0},
+    GLfloat luz_ambiental2[]={0.05,0.05,0.05,1.0},
+            luz_difusa2[]={1.0,1.0,1.0,1.0},
             luz_especular2[]={0.9,0.9,0.9,1.0},
-            luz_posicion2[]={0.0,0.0,0.0,1.0};
+            luz_posicion2[]={0.0,10.0,20.0,1.0};
 
     glLightfv(GL_LIGHT1,GL_AMBIENT,luz_ambiental);
     glLightfv(GL_LIGHT1,GL_DIFFUSE,luz_difusa);

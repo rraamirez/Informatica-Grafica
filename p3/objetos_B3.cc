@@ -502,6 +502,9 @@ if (tapa_su==1)
     }
 }
 
+  calcular_normales_caras();
+  calcular_normales_vertices();
+
 //colores de las caras
 colors_random();
 }

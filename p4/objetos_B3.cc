@@ -46,10 +46,32 @@ glEnd();*/
 
 _triangulos3D::_triangulos3D()
 {
-ambiente = {0.2f, 0.2f, 0.2f, 1.0f};
-difuso = {0.7f, 0.7f, 0.7f, 1.0f};
-especular = {0.3f, 0.3f, 0.3f, 1.0f};
-brillo = 32.0f;
+  b_normales_caras = false; 
+  b_normales_vertices = false;
+
+  /*materiales*/
+
+  _color color = ESMERALDA;
+  switch(color){
+    case BLANCO:
+      ambiente ={ 0.05f,0.05f,0.05f,1.0f };
+      difuso ={ 0.5f,0.5f,0.5f,1.0f};
+      especular ={ 0.7f,0.7f,0.7f,1.0f};
+      brillo = 10.0f;
+      break;
+    case OBSIDIANA:
+      ambiente ={ 0.05375f, 0.05f, 0.06625f, 0.82f };
+      difuso ={ 0.18275f, 0.17f, 0.22525f, 0.82f};
+      especular ={0.332741f, 0.328634f, 0.346435f, 0.82f };
+      brillo =38.4f ;
+      break;
+    case ESMERALDA:
+      ambiente = {0.2f, 0.2f, 0.2f, 1.0f};
+      difuso = {0.0f, 1.0f, 0.0f, 1.0f};  // Color verde en la luz difusa
+      especular = {0.3f, 0.3f, 0.3f, 1.0f};
+      brillo = 32.0f;
+      break;
+  }
 
 }
 
@@ -193,6 +215,23 @@ for (i=0;i<n_v;i++)
        normales_vertices[i].y/=modulo;
        normales_vertices[i].z/=modulo;            
       }
+}
+
+/*******************************************/
+//normales de vértices de la esfera
+void _esfera::calcular_normales_vertices()
+{
+  normales_vertices.resize(vertices.size());
+  for (int i = 0; i < vertices.size(); i++)
+  {
+    normales_vertices[i] = _vertex3f(0.0, 0.0, 0.0);
+    normales_vertices[i]._0 = vertices[i]._0;
+    normales_vertices[i]._1 =
+        vertices[i]._1;
+    normales_vertices[i]._2 = vertices[i]._2;
+    normales_vertices[i].normalize();
+  }
+  b_normales_vertices = true;
 }
 
 
@@ -607,10 +646,7 @@ if (tapa_su==1)
     }
 }
 
-//aqui va de video
-// normales
 calcular_normales_caras();
-
 calcular_normales_vertices();
 
 //colores de las caras
@@ -1314,23 +1350,29 @@ glPopMatrix();
 
 void _triangulos3D::draw_solido_plano( )
 {
-	int i;
-	glEnable(GL_LIGHTING);
-	glMaterialfv(GL_FRONT,GL_AMBIENT, (GLfloat *) &ambiente);
-	glMaterialfv(GL_FRONT,GL_DIFFUSE, (GLfloat *) &difuso);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, (GLfloat *) &especular);
-	glMaterialfv(GL_FRONT, GL_SHININESS, (GLfloat *) &brillo);
-	glEnable(GL_NORMALIZE);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glBegin(GL_TRIANGLES);
-	for (i=0;i<caras.size();i++){
-		glNormal3f(normales_caras[i].x,normales_caras[i].y,normales_caras[i].z);
-		glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
-		glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
-		glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
-	}
-	glEnd();
-	glDisable(GL_LIGHTING);
+ int i;
+  if (b_normales_caras == false)
+    calcular_normales_caras();
+  glEnable(GL_LIGHTING);
+  glShadeModel(GL_FLAT); 
+  glEnable(GL_NORMALIZE); 
+  
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (GLfloat *)&ambiente);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, (GLfloat *)&difuso);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (GLfloat *)&especular);
+  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, brillo);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glBegin(GL_TRIANGLES);
+
+  for (i = 0; i < caras.size(); i++)
+  {
+    glNormal3fv((GLfloat *)&normales_caras[i]);
+    glVertex3fv((GLfloat *)&vertices[caras[i]._0]);
+    glVertex3fv((GLfloat *)&vertices[caras[i]._1]);
+    glVertex3fv((GLfloat *)&vertices[caras[i]._2]);
+  }
+  glEnd();
+  glDisable(GL_LIGHTING);
 }
 
 
@@ -1342,24 +1384,27 @@ void _triangulos3D::draw_solido_plano( )
 //hacen falta las normales de los vértices de nuestros objtetos
 void _triangulos3D::draw_solido_suave( )
 {
-  
-	int i;
-	glEnable(GL_LIGHTING);
-	glMaterialfv(GL_FRONT,GL_AMBIENT, (GLfloat *) &ambiente);
-	glMaterialfv(GL_FRONT,GL_DIFFUSE, (GLfloat *) &difuso);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, (GLfloat *) &especular);
-	glMaterialfv(GL_FRONT, GL_SHININESS, (GLfloat *) &brillo);
-	glEnable(GL_NORMALIZE);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glBegin(GL_TRIANGLES);
-	for (i=0;i<caras.size();i++){
-		glNormal3f(normales_vertices[caras[i]._0].x,normales_vertices[caras[i]._0].y,normales_vertices[caras[i]._0].z);
-		glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
-		glNormal3f(normales_vertices[caras[i]._1].x,normales_vertices[caras[i]._1].y,normales_vertices[caras[i]._1].z);
-		glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
-		glNormal3f(normales_vertices[caras[i]._2].x,normales_vertices[caras[i]._2].y,normales_vertices[caras[i]._2].z);
-		glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
-	}
-	glEnd();
-	glDisable(GL_LIGHTING);
+if (!b_normales_vertices)
+    calcular_normales_vertices();
+  glEnable(GL_LIGHTING);
+  glShadeModel(GL_SMOOTH);
+  glEnable(GL_NORMALIZE);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, (GLfloat *)&ambiente);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, (GLfloat *)&difuso);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (GLfloat *)&especular);
+  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, brillo);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+  glBegin(GL_TRIANGLES);
+  for (int i = 0; i < caras.size(); i++)
+  {
+    glNormal3fv((GLfloat *)&normales_vertices[caras[i]._0]);
+    glVertex3fv((GLfloat *)&vertices[caras[i]._0]);
+    glNormal3fv((GLfloat *)&normales_vertices[caras[i]._1]);
+    glVertex3fv((GLfloat *)&vertices[caras[i]._1]);
+    glNormal3fv((GLfloat *)&normales_vertices[caras[i]._2]);
+    glVertex3fv((GLfloat *)&vertices[caras[i]._2]);
+  }
+  glEnd();
+  glDisable(GL_LIGHTING);
 }

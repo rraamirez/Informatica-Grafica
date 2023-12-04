@@ -10,6 +10,7 @@
 
 const float AXIS_SIZE=5000;
 typedef enum{POINTS,EDGES,SOLID,SOLID_COLORS,ILUMINACION_PLANA,ILUMINACION_GOURAUD} _modo;
+typedef enum {BLANCO,OBSIDIANA, ESMERALDA} _color; //para los materiales 
 
 //*************************************************************************
 // clase punto
@@ -67,6 +68,8 @@ void asignar_gama_metalicos();
 
 void    calcular_normales_caras();
 void    calcular_normales_vertices();
+
+bool b_normales_vertices, b_normales_caras;
 
 vector<_vertex3i> caras;
 vector<_vertex3f> colores_caras;
@@ -191,6 +194,8 @@ class _esfera: public _rotacion
 {
 public:
        _esfera(float radio=1.0, int latitud=6, int longitud=6);
+       void calcular_normales_vertices();
+       
 };
 
 
