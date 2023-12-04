@@ -72,6 +72,7 @@ int pulsar_alax=0;
 
 //prototipo de la función luces
 void luces();
+float alfa=0.0; //variable para la rotación de la luz
 
 
 
@@ -314,7 +315,15 @@ switch (Tecla1){
         alaX.ala3.canion.disparo-=0.1;
         alaX.ala4.canion.disparo-=0.1;
         break;
+
+    // así rotas la luz
+    case GLUT_KEY_F9:
+        alfa+=5;
+        break;
 	}
+
+    
+
 glutPostRedisplay();
 }
 
@@ -482,6 +491,11 @@ void luces(){
     glLightfv(GL_LIGHT2,GL_DIFFUSE,luz_difusa2);
     glLightfv(GL_LIGHT2,GL_SPECULAR,luz_especular2);
     glLightfv(GL_LIGHT2,GL_POSITION,luz_posicion2);
+
+    glPushMatrix();
+    glRotatef(alfa, 0, 0, 1);
+    glLightfv(GL_LIGHT2,GL_POSITION,luz_posicion2);
+    glPopMatrix();
 
     glDisable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
