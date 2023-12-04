@@ -10,7 +10,7 @@
 
 const float AXIS_SIZE=5000;
 typedef enum{POINTS,EDGES,SOLID,SOLID_COLORS,ILUMINACION_PLANA,ILUMINACION_GOURAUD} _modo;
-typedef enum {BLANCO,OBSIDIANA, ESMERALDA} _color; //para los materiales 
+typedef enum {ROJO,OBSIDIANA, ESMERALDA} _color; //para los materiales 
 
 //*************************************************************************
 // clase punto

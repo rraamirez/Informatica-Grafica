@@ -51,13 +51,13 @@ _triangulos3D::_triangulos3D()
 
   /*materiales*/
 
-  _color color = ESMERALDA;
+  _color color = ROJO;
   switch(color){
-    case BLANCO:
-      ambiente ={ 0.05f,0.05f,0.05f,1.0f };
-      difuso ={ 0.5f,0.5f,0.5f,1.0f};
-      especular ={ 0.7f,0.7f,0.7f,1.0f};
-      brillo = 10.0f;
+    case ROJO:
+      ambiente = {0.2f, 0.2f, 0.2f, 1.0f};
+      difuso = {1.0f, 0.0f, 0.0f, 1.0f};  // Color rojo en la luz difusa
+      especular = {0.3f, 0.3f, 0.3f, 1.0f};
+      brillo = 32.0f;
       break;
     case OBSIDIANA:
       ambiente ={ 0.05375f, 0.05f, 0.06625f, 0.82f };
