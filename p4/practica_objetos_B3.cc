@@ -334,30 +334,39 @@ glutPostRedisplay();
 // entero que representa una entrada del menú 
 //***************************************************************************
 
-void menu(int key)
-{
-
-   if (key==0)
-        {excavadora.giro_pala+=4;
-        if (excavadora.giro_pala > excavadora.giro_pala_max)
-            excavadora.giro_pala = excavadora.giro_pala_max;
-        }
-   if (key==1)
-        {excavadora.giro_pala-=4;
+void menu(int key) {
+    if (key == 0) {
+        if (alaX.giroPuerta > alaX.giroPuertamax)
+            alaX.giroPuerta -= 5;
+    } else if (key == 1) {
+        excavadora.giro_pala -= 4;
         if (excavadora.giro_pala < excavadora.giro_pala_min)
             excavadora.giro_pala = excavadora.giro_pala_min;
-        }
-   if (key==2)
-          {giro1=1.0;
-           giro2=1.0;
-           giro3=0.25;
-           }
-   if (key==3)
-          {giro1=0.0;
-          giro2=0.0;
-          giro3=0.0;
-          }
+    } else if (key == 2) {
+        if (pulsar_alax==0)
+                    {giro_puerta=0.5;
+                     giro_punta=1.0;
+                     giro_alas=0.5;
+                     giro_canion=0.01;
+                     pulsar_alax=1;
+                     }
+                 else
+                    {giro_puerta=0.0;
+                     giro_punta=0.0;
+                     giro_alas=0.0;
+                     giro_canion=0.0;
+                     pulsar_alax=0;
+                     }    
+
+    } else if (key == 3) {
+        giro_puerta=0.0;
+        giro_punta=0.0;
+        giro_alas=0.0;
+        giro_canion=0.0;
+        pulsar_alax=0;
+    }
 }
+
 
 
 
@@ -581,8 +590,6 @@ glutSpecialFunc(special_key);
 
  // Creamos menú
 glutCreateMenu(menu);
-glutAddMenuEntry("Girar pala positivo", 0);
-glutAddMenuEntry("Girar pala negativo", 1);
 glutAddMenuEntry("Activar animación", 2);
 glutAddMenuEntry("Desactivar animación", 3);
 glutAttachMenu(GLUT_LEFT_BUTTON);
