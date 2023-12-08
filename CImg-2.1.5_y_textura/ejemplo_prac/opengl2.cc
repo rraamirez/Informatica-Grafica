@@ -31,15 +31,21 @@ GLuint textura_id;
 
 // CUBE VERTICES AND TEXTURE COORDINATES
 GLfloat cubeVertices[][3] = {
-    {-0.7, -0.7, 0.7},
-    {0.7, -0.7, 0.7},
-    {0.7, 0.7, 0.7},
-    {-0.7, 0.7, 0.7},
     {-0.7, -0.7, -0.7},
     {0.7, -0.7, -0.7},
     {0.7, 0.7, -0.7},
-    {-0.7, 0.7, -0.7}
-    };
+    {-0.7, 0.7, -0.7},
+    {-0.7, -0.7, 0.7},
+    {0.7, -0.7, 0.7},
+    {0.7, 0.7, 0.7},
+    {-0.7, 0.7, 0.7}};
+
+
+GLfloat texCoords[][2] = {
+    {0.0, 0.25},
+    {1.0, 0.25},
+    {1.0, 1.0},
+    {0.0, 1.0}};
 
 float latitud = 0.0, longitud = 0.0, radio = 5.0;
 
@@ -175,16 +181,6 @@ void prepara_textura(char *file, GLuint *tex_id) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.width(), image.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, &data[0]);
 }
 
-// Coordenadas de textura específicas para cada sección de la imagen
-GLfloat texCoordsFront[][2] = {{0.25, 0.5}, {0.5, 0.5}, {0.5, 0.25}, {0.25, 0.25}};
-// GLfloat texCoordsBack[][2] = {{0.75, 0.5}, {1.0, 0.5}, {1.0, 0.25}, {0.75, 0.25}};
-GLfloat texCoordsBack[][2] = {{1.0,0.5},  {0.75, 0.5}, {0.75, 0.25},{1.0, 0.25}};  // Corregido
-GLfloat texCoordsTop[][2] = {{0.25, 0.25}, {0.5, 0.25}, {0.5, 0.0}, {0.25, 0.0}};
-GLfloat texCoordsBottom[][2] = {{0.25, 0.75}, {0.5, 0.75}, {0.5, 0.5}, {0.25, 0.5}};
-GLfloat texCoordsRight[][2] = {{0.5, 0.5}, {0.75, 0.5}, {0.75, 0.25}, {0.5, 0.25}};
-GLfloat texCoordsLeft[][2] = {{0.25, 0.5}, {0.0, 0.5}, {0.0, 0.25}, {0.25, 0.25}};  // Corregido
-
-
 void dibuja_cubo() {
     glEnable(GL_TEXTURE_2D);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -194,73 +190,73 @@ void dibuja_cubo() {
 
     // Front face
     glBegin(GL_QUADS);
-    glTexCoord2fv(texCoordsFront[0]);
+    glTexCoord2fv(texCoords[0]);
     glVertex3fv(cubeVertices[0]);
-    glTexCoord2fv(texCoordsFront[1]);
+    glTexCoord2fv(texCoords[1]);
     glVertex3fv(cubeVertices[1]);
-    glTexCoord2fv(texCoordsFront[2]);
+    glTexCoord2fv(texCoords[2]);
     glVertex3fv(cubeVertices[2]);
-    glTexCoord2fv(texCoordsFront[3]);
+    glTexCoord2fv(texCoords[3]);
     glVertex3fv(cubeVertices[3]);
     glEnd();
 
     // Back face
     glBegin(GL_QUADS);
-    glTexCoord2fv(texCoordsBack[0]);
+    glTexCoord2fv(texCoords[0]);
     glVertex3fv(cubeVertices[4]);
-    glTexCoord2fv(texCoordsBack[1]);
+    glTexCoord2fv(texCoords[1]);
     glVertex3fv(cubeVertices[5]);
-    glTexCoord2fv(texCoordsBack[2]);
+    glTexCoord2fv(texCoords[2]);
     glVertex3fv(cubeVertices[6]);
-    glTexCoord2fv(texCoordsBack[3]);
+    glTexCoord2fv(texCoords[3]);
     glVertex3fv(cubeVertices[7]);
     glEnd();
 
     // Top face
     glBegin(GL_QUADS);
-    glTexCoord2fv(texCoordsTop[0]);
+    glTexCoord2fv(texCoords[0]);
     glVertex3fv(cubeVertices[3]);
-    glTexCoord2fv(texCoordsTop[1]);
+    glTexCoord2fv(texCoords[1]);
     glVertex3fv(cubeVertices[2]);
-    glTexCoord2fv(texCoordsTop[2]);
+    glTexCoord2fv(texCoords[2]);
     glVertex3fv(cubeVertices[6]);
-    glTexCoord2fv(texCoordsTop[3]);
+    glTexCoord2fv(texCoords[3]);
     glVertex3fv(cubeVertices[7]);
     glEnd();
 
     // Bottom face
     glBegin(GL_QUADS);
-    glTexCoord2fv(texCoordsBottom[0]);
+    glTexCoord2fv(texCoords[0]);
     glVertex3fv(cubeVertices[0]);
-    glTexCoord2fv(texCoordsBottom[1]);
+    glTexCoord2fv(texCoords[1]);
     glVertex3fv(cubeVertices[1]);
-    glTexCoord2fv(texCoordsBottom[2]);
+    glTexCoord2fv(texCoords[2]);
     glVertex3fv(cubeVertices[5]);
-    glTexCoord2fv(texCoordsBottom[3]);
+    glTexCoord2fv(texCoords[3]);
     glVertex3fv(cubeVertices[4]);
     glEnd();
 
     // Right face
     glBegin(GL_QUADS);
-    glTexCoord2fv(texCoordsRight[0]);
+    glTexCoord2fv(texCoords[0]);
     glVertex3fv(cubeVertices[1]);
-    glTexCoord2fv(texCoordsRight[1]);
+    glTexCoord2fv(texCoords[1]);
     glVertex3fv(cubeVertices[5]);
-    glTexCoord2fv(texCoordsRight[2]);
+    glTexCoord2fv(texCoords[2]);
     glVertex3fv(cubeVertices[6]);
-    glTexCoord2fv(texCoordsRight[3]);
+    glTexCoord2fv(texCoords[3]);
     glVertex3fv(cubeVertices[2]);
     glEnd();
 
     // Left face
     glBegin(GL_QUADS);
-    glTexCoord2fv(texCoordsLeft[0]);
+    glTexCoord2fv(texCoords[0]);
     glVertex3fv(cubeVertices[0]);
-    glTexCoord2fv(texCoordsLeft[1]);
+    glTexCoord2fv(texCoords[1]);
     glVertex3fv(cubeVertices[4]);
-    glTexCoord2fv(texCoordsLeft[2]);
+    glTexCoord2fv(texCoords[2]);
     glVertex3fv(cubeVertices[7]);
-    glTexCoord2fv(texCoordsLeft[3]);
+    glTexCoord2fv(texCoords[3]);
     glVertex3fv(cubeVertices[3]);
     glEnd();
 
@@ -268,6 +264,7 @@ void dibuja_cubo() {
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);
 }
+
 
 // Function to release the GPU texture
 void libera_textura(GLuint *tex_id) {
