@@ -1,0 +1,7 @@
+En esta implementación de la práctica final, sólo se ha habilitado las funcionalidades necesarias, es decir, que para movimiento luces etc consultar entregas anteriores.
+
+Vista ortogonal/normal: Botones ',' y '.'
+
+Zoom raton: Implementado con la rueda del ratón.
+
+Pick: Pulse botón 'A' para visualizar el modelo y con el click izquierdo del ratón se hace el pick.

@@ -41,7 +41,8 @@ _extrusion *extrusion;
 
 // _objeto_ply *ply;
 
-int estadoRaton, xc, yc, camara =0;
+int estadoRaton, xc, yc;
+int camara = 0;
 
 
 
@@ -98,6 +99,8 @@ void change_projection()
 
 glMatrixMode(GL_PROJECTION);
 glLoadIdentity();
+ glViewport(0, 0,Ancho, Alto );
+
 
 // formato(x_minimo,x_maximo, y_minimo, y_maximo,plano_delantero, plano_traser)
 //  plano_delantero>0  plano_trasero>PlanoDelantero)
@@ -209,15 +212,120 @@ switch (t_objeto){
 // glFlush();
 // }
 
+void vista_orto_seleccion()
+{
+
+    glViewport(0, Alto/2, Ancho/2, Alto/2);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-5*factor, 5*factor, -5*factor, 5*factor, -100, 100);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    draw_axis();
+    draw_objects();
+
+    alaX.seleccion();
+
+    glViewport(0, 0, Ancho/2, Alto/2);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-5*factor, 5*factor, -5*factor, 5*factor, -100, 100);
+    glRotatef(90, 1, 0, 0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    draw_axis();
+    draw_objects();
+
+    alaX.seleccion();
+}
+
+// void draw(void)
+// {
+//     glDrawBuffer(GL_FRONT);
+//     clean_window();
+
+//     change_projection();
+    
+//     if (camara == 0)
+//     {
+//         glViewport(0,0,Ancho,Alto);
+//         change_projection();
+
+//         change_observer();
+//         draw_axis();
+//         luces();
+//         draw_objects();
+//         printf("Aqui etnra\n");
+//     }
+//     else{
+//         vista_ortogonal();
+//         printf("Aqui etnra orto\n");
+//     }
+
+//     if(camara == 0){
+//         if (t_objeto == ALAX)
+//     {
+//         glDrawBuffer(GL_BACK);
+//         clean_window();
+//         change_projection();
+//                 printf("Aqui etnra alax\n");
+
+//         if (camara == 0)
+//         {
+//             change_projection();
+//             change_observer();
+//             alaX.seleccion();
+//         }
+//         else{
+//             vista_orto_seleccion();
+//                     printf("Aqui etnra orto seleccion\n");}
+
+//     }
+//     }
+
+//     glFlush();
+// }
+
 void draw(void)
 {
+glDrawBuffer(GL_FRONT);
 clean_window();
-change_observer();
-luces();
-draw_axis();
-draw_objects();
-glutSwapBuffers();
+change_projection();
+if(camara==0){
+  change_observer();
+  draw_axis();
+  draw_objects();
+}else vista_ortogonal();
+
+if (t_objeto==ALAX)
+  {glDrawBuffer(GL_BACK);
+   clean_window();
+   change_projection();
+   if(camara==0){
+
+    change_observer();
+    excavadora.seleccion();
+
+   } else vista_orto_seleccion();
+   
+  }
+
+glFlush();
 }
+
+
+
+// void draw(void)
+// {
+// clean_window();
+// change_observer();
+// luces();
+// draw_axis();
+// draw_objects();
+// glutSwapBuffers();
+// }
 
 
 
@@ -232,13 +340,15 @@ glutSwapBuffers();
 
 void change_window_size(int Ancho1,int Alto1)
 {
-float Aspect_ratio;
+    float Aspect_ratio;
 
-Aspect_ratio=(float) Alto1/(float )Ancho1;
-Size_y=Size_x*Aspect_ratio;
-change_projection();
-glViewport(0,0,Ancho1,Alto1);
-glutPostRedisplay();
+    Aspect_ratio = (float)Alto1 / (float)Ancho1;
+    Size_y = Size_x * Aspect_ratio;
+    change_projection();
+    glViewport(Ancho1, Alto1, Ancho1, Alto1);
+    Ancho = Ancho1;
+    Alto = Alto1;
+    glutPostRedisplay();
 }
 
 
@@ -268,8 +378,12 @@ switch (toupper(Tecla1)){
       segundaLuz = true;
     }else segundaLuz = false;
 
-        case '7':camara=0;break;
-    case '8':camara=1;break;
+    case ',':
+        camara = 0;
+        break;
+    case '.':
+        camara = 1;
+        break;
     case '+':factor*=0.9;break;
     case '-':factor*=1.1;break;
     
@@ -445,6 +559,8 @@ void clickRaton( int boton, int estado, int x, int y )
     // para el zoom del raton
 
         if(boton==3){
+                        printf("aqui entra");
+
             if(estado == GLUT_UP){ 
                 estadoRaton = 3;
                 Observer_distance/=1.2;
