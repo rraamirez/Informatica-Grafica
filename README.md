@@ -1,4 +1,4 @@
-# PracticasIG
+# Practicas Informatica Grafica 
 Prácticas de la asignatura informática gráfica.
 OpenGl y C++
 Curso 2324.
